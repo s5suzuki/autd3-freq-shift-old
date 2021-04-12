@@ -4,7 +4,7 @@
  * Created Date: 11/04/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 11/04/2021
+ * Last Modified: 12/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -34,13 +34,6 @@ ultrasound_cnt_clk_gen ultrasound_cnt_clk_gen(
                            .clk_out1(ultrasound_cnt_clk),
                            .clk_out2(lpf_clk)
                        );
-
-pwm_generator pwm_generator(
-                  .TIME(time_cnt),
-                  .DUTY(duty),
-                  .PHASE(phase),
-                  .PWM_OUT(pwm_out)
-              );
 
 transducer transducer(
                .CLK(ultrasound_cnt_clk),

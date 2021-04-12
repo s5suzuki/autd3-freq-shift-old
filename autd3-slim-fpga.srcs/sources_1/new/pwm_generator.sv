@@ -13,36 +13,32 @@
 
 `timescale 1ns / 1ps
 
-module pwm_generator#(
-           parameter int RESOLUTION_WIDTH = 8,
-           parameter [RESOLUTION_WIDTH-1:0] DUTY_MAX = 255,
-           parameter [RESOLUTION_WIDTH-1:0] TIME_CNT_MAX = 2*DUTY_MAX
-       )(
-           input var [RESOLUTION_WIDTH:0] TIME,
-           input var [RESOLUTION_WIDTH-1:0] DUTY,
-           input var [RESOLUTION_WIDTH-1:0] PHASE,
+module pwm_generator(
+           input var [8:0] TIME,
+           input var [7:0] DUTY,
+           input var [7:0] PHASE,
            output var PWM_OUT
        );
 
-logic [RESOLUTION_WIDTH+1:0] t;
-logic [RESOLUTION_WIDTH+1:0] d;
-logic [RESOLUTION_WIDTH+1:0] s;
+logic [9:0] t;
+logic [9:0] duty;
+logic [9:0] s;
 
 assign t = {1'b0, TIME};
-assign d = {2'b00, DUTY};
-assign s = keep_phase(PHASE, d); // s is a shift duration of PWM signal
-assign PWM_OUT = pwm(t, d, s);
+assign duty = {2'b00, DUTY};
+assign s = keep_phase(PHASE, duty); // s is a shift duration of PWM signal
+assign PWM_OUT = pwm(t, duty, s);
 
 function automatic pwm;
-    input [RESOLUTION_WIDTH+1:0] t;
-    input [RESOLUTION_WIDTH+1:0] d;
-    input [RESOLUTION_WIDTH+1:0] s;
+    input [9:0] t;
+    input [9:0] duty;
+    input [9:0] s;
     begin
-        if (d + s < TIME_CNT_MAX) begin
-            pwm = (s <= t) & (t < d + s);
+        if (duty + s < 10'd510) begin
+            pwm = (s <= t) & (t < duty + s);
         end
         else begin
-            pwm = (s <= t) | ((s <= t + TIME_CNT_MAX) & (t + TIME_CNT_MAX < d + s));
+            pwm = (s <= t) | ((s <= t + 10'd510) & (t + 10'd510 < duty + s));
         end
     end
 endfunction
@@ -50,10 +46,10 @@ endfunction
 // Shift duration S does not equal the phase of ultrasound emitted and has some a bias term related to duty ratio D.
 // (c.f. Eq. 16 in "Suzuki, Shun, et al. "Reducing Amplitude Fluctuation by Gradual Phase Shift in Midair Ultrasound Haptics." IEEE Transactions on Haptics 13.1 (2020): 87-93.")
 // Therefore, even if the phase is constant, S will change as D changes.
-function automatic [RESOLUTION_WIDTH+1:0] keep_phase;
-    input [RESOLUTION_WIDTH-1:0] phase;
-    input [RESOLUTION_WIDTH-1:0] d;
-    keep_phase = {1'b0, phase, 1'b0} + ({2'b0, DUTY_MAX[RESOLUTION_WIDTH-1:1]} - {2'b00, d[RESOLUTION_WIDTH-1:1]});
+function automatic [9:0] keep_phase;
+    input [7:0] phase;
+    input [7:0] duty;
+    keep_phase = {1'b0, phase, 1'b0} + (10'h07F - {2'b00, duty[7:1]});
 endfunction
 
 endmodule

@@ -27,23 +27,21 @@ module top(
            input var CAT_SYNC0,
            output var FORCE_FAN,
            input var THERMO,
-           input var [3:0]GPIO_IN,
            output var [252:1] XDCR_OUT,
+           input var [3:0]GPIO_IN,
            output var [3:0]GPIO_OUT
        );
 
 localparam int TRANS_NUM = 249;
 
-localparam int RESOLUTION_WIDTH = 8;
-localparam [RESOLUTION_WIDTH-1:0] DUTY_MAX = 255;
-localparam [RESOLUTION_WIDTH+1:0] TIME_CNT_CYCLE = 2*DUTY_MAX;
-
 localparam int SYS_CLK_FREQ = 20400000;
-localparam int ULTRASOUND_FREQ = SYS_CLK_FREQ/TIME_CNT_CYCLE;
+localparam int ULTRASOUND_FREQ = 40000;
 
 localparam int MOD_FREQ = 4000;
 localparam int MOD_BUF_SIZE = 4000;
 localparam int MOD_CNT_CYCLE = SYS_CLK_FREQ/MOD_FREQ;
+
+localparam int SYNC0_FREQ = 1000;
 
 localparam [3:0] BRAM_TR_SELECT = 4'h0;
 localparam [3:0] BRAM_MOD_SELECT = 4'h1;
@@ -60,7 +58,7 @@ logic sys_clk;
 logic bus_clk;
 logic reset;
 
-logic [RESOLUTION_WIDTH+1:0] time_cnt_for_ultrasound;
+logic [8:0] time_cnt_for_ultrasound;
 
 logic [3:0] cpu_select;
 logic [11:0] cpu_addr;
@@ -69,15 +67,16 @@ logic tr_wea;
 logic mod_wea;
 logic config_wea;
 
-logic [RESOLUTION_WIDTH-1:0] duty[0:TRANS_NUM-1];
-logic [RESOLUTION_WIDTH-1:0] phase[0:TRANS_NUM-1];
-logic [RESOLUTION_WIDTH-1:0] mod;
-
-logic [2:0] sync0;
+logic [7:0] duty[0:TRANS_NUM-1];
+logic [7:0] phase[0:TRANS_NUM-1];
+logic [7:0] mod;
 
 logic [7:0] ctrl_flags;
 logic [7:0] fpga_info;
 logic silent;
+
+logic clk_sync;
+logic [11:0] mod_idx;
 
 assign bus_clk = CPU_CKIO;
 assign reset = ~RESET_N;
@@ -86,6 +85,7 @@ assign cpu_addr = CPU_ADDR[12:1];
 assign CPU_DATA  = (~CPU_CS1_N && ~CPU_RD_N && CPU_RDWR) ? cpu_data_out : 16'bz;
 assign tr_wea = (cpu_select == BRAM_TR_SELECT) & (~CPU_WE0_N);
 assign mod_wea = (cpu_select == BRAM_MOD_SELECT) & (~CPU_WE0_N);
+assign config_wea = (cpu_select == BRAM_CONFIG_SELECT) & (~CPU_WE0_N);
 
 assign silent = ctrl_flags[SILENT_MODE_IDX];
 assign FORCE_FAN = ctrl_flags[FORCE_FAN_IDX];
@@ -98,12 +98,83 @@ ultrasound_cnt_clk_gen ultrasound_cnt_clk_gen(
                            .clk_out2(lpf_clk)
                        );
 
+//////////////////////////////////// Synchronize ///////////////////////////////////////////
+logic [2:0] sync0;
+logic sync0_edge;
+
+logic clk_sync_rst;
+logic [12:0] mod_cnt;
+logic [11:0] mod_idx_sync;
+
+localparam int MOD_IDX_SYNC_STEP = MOD_FREQ/SYNC0_FREQ;
+
+assign sync0_edge = (sync0 == 3'b011);
+
+always_ff @(posedge sys_clk) begin
+    if (reset) begin
+        sync0 <= 0;
+    end
+    else begin
+        sync0 <= {sync0[1:0], CAT_SYNC0};
+    end
+end
+
+always_ff @(posedge sys_clk) begin
+    if (reset | sync0_edge) begin
+        time_cnt_for_ultrasound <= 0;
+    end
+    else begin
+        time_cnt_for_ultrasound <= (time_cnt_for_ultrasound == 9'd509) ? 0 : time_cnt_for_ultrasound + 1;
+    end
+end
+
+always_ff @(posedge sys_clk) begin
+    if (reset) begin
+        clk_sync_rst <= 0;
+    end
+    if (clk_sync) begin
+        clk_sync_rst <= 1;
+    end
+    else begin
+        clk_sync_rst <= 0;
+    end
+end
+
+always_ff @(posedge sys_clk) begin
+    if (reset | (sync0_edge & clk_sync & ~clk_sync_rst)) begin
+        mod_cnt <= 0;
+        mod_idx <= 0;
+        mod_idx_sync <= 0;
+    end
+    else if (sync0_edge) begin
+        mod_cnt <= 0;
+        if (mod_idx_sync + MOD_IDX_SYNC_STEP == MOD_BUF_SIZE) begin
+            mod_idx <= 0;
+            mod_idx_sync <= 0;
+        end
+        else begin
+            mod_idx <= mod_idx_sync + MOD_IDX_SYNC_STEP;
+            mod_idx_sync <= mod_idx_sync + MOD_IDX_SYNC_STEP;
+        end
+    end
+    else begin
+        if (mod_cnt == (MOD_CNT_CYCLE - 1)) begin
+            mod_cnt <= 0;
+            mod_idx <= (mod_idx == (MOD_BUF_SIZE - 1)) ? 0 : mod_idx + 1;
+        end
+        else begin
+            mod_cnt <= mod_cnt + 1;
+        end
+    end
+end
+//////////////////////////////////// Synchronize ///////////////////////////////////////////
+
 //////////////////////////////// Duty and Phase set ////////////////////////////////////////
 logic [7:0] tr_cnt_write;
 logic [7:0] tr_bram_addr;
 logic [15:0] tr_bram_dataout;
-logic [RESOLUTION_WIDTH:0] duty_buf[0:TRANS_NUM-1];
-logic [RESOLUTION_WIDTH:0] phase_buf[0:TRANS_NUM-1];
+logic [7:0] duty_buf[0:TRANS_NUM-1];
+logic [7:0] phase_buf[0:TRANS_NUM-1];
 
 enum logic [2:0] {
          IDLE,
@@ -137,7 +208,7 @@ always_ff @(posedge sys_clk) begin
     else begin
         case(tr_state)
             IDLE: begin
-                if (TIME == 10'd0) begin
+                if (time_cnt_for_ultrasound == 10'd0) begin
                     tr_bram_addr <= 8'd0;
                     tr_state <= DUTY_PHASE_WAIT_0;
                 end
@@ -173,7 +244,7 @@ always_ff @(posedge sys_clk) begin
         duty <= '{TRANS_NUM{8'h00}};
         phase <= '{TRANS_NUM{8'h00}};
     end
-    else if (time_cnt_for_ultrasound == (TIME_CNT_MAX - 1)) begin
+    else if (time_cnt_for_ultrasound == 9'd509) begin
         duty <= duty_buf;
         phase <= phase_buf;
     end
@@ -181,8 +252,6 @@ end
 //////////////////////////////// Duty and Phase set ////////////////////////////////////////
 
 //////////////////////////////// Modulation control ////////////////////////////////////////
-logic [11:0] mod_bram_addr;
-logic [12:0] mod_cnt;
 mod_bram mod_bram(
              .clka(bus_clk),
              .ena(~CPU_CS1_N),
@@ -192,30 +261,17 @@ mod_bram mod_bram(
              .douta(),
              .clkb(sys_clk),
              .web(1'b0),
-             .addrb(mod_bram_addr),
+             .addrb(mod_idx),
              .dinb(8'h00),
              .doutb(mod)
          );
-
-always_ff @(posedge sys_clk) begin
-    if (reset) begin
-        mod_cnt <= 0;
-        mod_bram_addr <= 0;
-    end
-    else begin
-        if (mod_cnt == (MOD_CNT_CYCLE - 1)) begin
-            mod_cnt <= 0;
-            mod_bram_addr <= (mod_bram_addr == (MOD_BUF_SIZE - 1)) ? 0 : mod_bram_addr + 1;
-        end
-        else begin
-            mod_cnt <= mod_cnt + 1;
-        end
-    end
-end
 //////////////////////////////// Modulation control ////////////////////////////////////////
 
 ////////////////////////////////// Config control //////////////////////////////////////////
 logic [15:0] config_bram_din;
+logic [15:0] config_bram_dout;
+logic [7:0] config_bram_addr;
+logic config_web;
 
 enum logic [2:0] {
          CTRL_FLAGS_READ,
@@ -237,10 +293,13 @@ config_bram config_bram(
                 .doutb(config_bram_dout)
             );
 
-
 always_ff @(posedge sys_clk) begin
     if (reset) begin
         config_state <= CTRL_FLAGS_READ;
+        config_bram_addr <= 0;
+        config_bram_din <= 0;
+        config_web <= 0;
+        ctrl_flags <= 0;
     end
     else begin
         case(config_state)
@@ -257,6 +316,7 @@ always_ff @(posedge sys_clk) begin
             end
             CLK_SYNC_READ: begin
                 config_bram_addr <= CLK_SYNC_ADDR;
+                clk_sync <= config_bram_dout[0];
                 config_web <= 1'b0;
                 config_state <= CTRL_FLAGS_READ;
             end

@@ -4,7 +4,7 @@
  * Created Date: 15/12/2020
  * Author: Shun Suzuki
  * -----
- * Last Modified: 11/04/2021
+ * Last Modified: 12/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -13,7 +13,6 @@
 
 `timescale 1ns / 1ps
 
-// This module is specialized for 8 bit phase/duty ratio
 module silent_lpf(
            input var CLK,
            input var CLK_LPF,
@@ -32,7 +31,7 @@ logic[7:0] fs_async_buf;
 
 logic[7:0] datain;
 logic chin;
-logic signed [9:0] dataout;
+logic signed [15:0] dataout;
 logic chout, enout, enin;
 logic enout_rst, enin_rst;
 
@@ -112,8 +111,8 @@ always_ff @(posedge CLK) begin
 end
 
 function automatic [7:0] clamp;
-    input signed [9:0] x;
-    clamp = (x > 10'sd255) ? 8'd255 : ((x < 10'sd0) ? 0 : x[7:0]);
+    input signed [15:0] x;
+    clamp = (x > 16'sd255) ? 8'd255 : ((x < 16'sd0) ? 0 : x[7:0]);
 endfunction
 
 endmodule
