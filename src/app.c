@@ -116,9 +116,9 @@ static uint16_t get_cpu_version(void) { return CPU_VERSION; }
 static uint16_t get_fpga_version(void) { return bram_read(BRAM_CONFIG_SELECT, FPGA_VER_ADDR); }
 
 void update(void) {
-  if ((_ctrl_flags & MOD_SYNC) != 0) {
+  if ((_ctrl_flag & MOD_SYNC) != 0) {
     sync_fpga_mod_clk();
-    _ctrl_flags &= ~MOD_SYNC;
+    _ctrl_flag &= ~MOD_SYNC;
   }
 }
 
@@ -126,6 +126,8 @@ void recv_ethercat(void) {
   volatile uint16_t *base = (volatile uint16_t *)FPGA_BASE;
   RxGlobalHeader *header = (RxGlobalHeader *)(_sRx1.data);
   uint16_t mod_write;
+  uint16_t addr;
+  uint32_t i;
 
   if (header->msg_id != _header_id) {
     _ctrl_flag = header->control_flags;
@@ -134,6 +136,7 @@ void recv_ethercat(void) {
     switch (header->cmd) {
       case CMD_OP:
         bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, _ctrl_flag);
+        addr = get_addr(BRAM_TR_SELECT, 0);
         word_cpy_volatile(&base[addr], _sRx0.data, TRANS_NUM);
 
         if ((header->control_flags & MOD_BEGIN) != 0) {
