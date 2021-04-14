@@ -1,0 +1,71 @@
+name: build
+
+on:
+  push:
+    branches:
+      - 'dev'
+
+jobs:
+  build:
+    name: build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+     
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init --force --recursive
+    - name: setup-msbuild
+      if: matrix.os == 'windows-latest'
+      uses: microsoft/setup-msbuild@v1
+    - name: build for Windows x64
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd client
+        cmake -G "Visual Studio 16 2019" -A x64 -B "build"
+        cd build
+        msbuild autd3.sln /t:build /p:Configuration=Release
+    - name: install gcc-10
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt update
+        sudo apt install gcc-10 g++-10 -y
+      shell: bash
+    - name: build for Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd client
+        mkdir -p build && cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+        make -j8
+      shell: bash
+      env:
+        CC: gcc-10
+        CXX: g++-10
+    - name: build for macOS
+      if: matrix.os == 'macos-latest'
+      run: |
+        cd client
+        mkdir -p build && cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+        make -j8
+        
+  lint:
+    name: lint
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps: 
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init --force --recursive
+    - name: lint
+      run: |
+        cd client
+        mkdir -p build && cd build
+        cmake .. -DENABLE_LINT=ON
+        make cpplint
