@@ -4,7 +4,7 @@
  * Created Date: 27/03/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 12/04/2021
+ * Last Modified: 15/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -350,5 +350,38 @@ function automatic [7:0] modulate_duty;
     input [7:0] mod;
     modulate_duty = ((duty + 17'd1) * (mod + 17'd1) - 17'd1) >> 8;
 endfunction
+
+/////////////////////////////////////// Debug //////////////////////////////////////////////
+logic gpo_0, gpo_1, gpo_2, gpo_3;
+logic mod_cnt_rst;
+
+assign GPIO_OUT = {gpo_3, gpo_2, gpo_1, gpo_0};
+
+always_ff @(posedge sys_clk) begin
+    if (reset) begin
+        mod_cnt_rst <= 0;
+    end
+    if (mod_cnt == 0) begin
+        mod_cnt_rst <= 1;
+    end
+    else begin
+        mod_cnt_rst <= 0;
+    end
+end
+
+always_ff @(posedge sys_clk) begin
+    if (reset) begin
+        gpo_0 <= 0;
+        gpo_1 <= 0;
+        gpo_2 <= 0;
+        gpo_3 <= 0;
+    end
+    else begin
+        gpo_0 <= (sync0_edge) ? ~gpo_0 : gpo_0;
+        gpo_1 <= (time_cnt_for_ultrasound == 0) ? ~gpo_1 : gpo_1;
+        gpo_2<= ((mod_cnt == 0) & ~mod_cnt_rst) ? ~gpo_2 : gpo_2;
+    end
+end
+/////////////////////////////////////// Debug //////////////////////////////////////////////
 
 endmodule
