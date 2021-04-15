@@ -3,7 +3,7 @@
 // Created Date: 11/04/2018
 // Author: Shun Suzuki
 // -----
-// Last Modified: 14/04/2021
+// Last Modified: 15/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2018-2020 Hapis Lab. All rights reserved.
@@ -12,6 +12,7 @@
 #pragma once
 
 #include <memory>
+#include <utility>
 
 #include "autd_types.hpp"
 #include "linalg.hpp"

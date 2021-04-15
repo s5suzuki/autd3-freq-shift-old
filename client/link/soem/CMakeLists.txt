@@ -29,9 +29,9 @@ file(GLOB_RECURSE SOEM_SRC_FILES ${SOEM_PATH}/soem/*.c ${SOEM_PATH}/osal/${OS}/*
 add_library(link_soem STATIC
   ./src/autdsoem.cpp
   ./src/autdsoem.hpp
-  ./src/ec_config.hpp
   ./src/soemlink.cpp
-  ./include/soemlink.hpp
+  ./include/soemlink.hpp 
+  ./include/ec_config.hpp
   ${SOEM_SRC_FILES}
 )
 
