@@ -3,7 +3,7 @@
 // Created Date: 24/08/2019
 // Author: Shun Suzuki
 // -----
-// Last Modified: 14/04/2021
+// Last Modified: 16/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2019-2020 Hapis Lab. All rights reserved.
@@ -16,8 +16,9 @@
 #endif
 
 #include "soemlink.hpp"
-#include "ec_config.hpp"
+
 #include "autdsoem.hpp"
+#include "ec_config.hpp"
 
 namespace autd::link {
 
@@ -47,7 +48,7 @@ class SOEMLinkImpl final : public SOEMLink {
   Result<bool, std::string> Open() override;
   Result<bool, std::string> Close() override;
   Result<bool, std::string> Send(size_t size, const uint8_t* buf) override;
-  Result<bool, std::string> Read(uint8_t* rx, uint32_t buffer_len) override;
+  Result<bool, std::string> Read(uint8_t* rx, size_t buffer_len) override;
   bool is_open() override;
 
  private:
@@ -58,7 +59,7 @@ class SOEMLinkImpl final : public SOEMLink {
 };
 
 LinkPtr SOEMLink::Create(const std::string& ifname, const size_t device_num) {
-  LinkPtr link = std::make_shared<SOEMLinkImpl>(ifname, device_num);
+  LinkPtr link = std::make_unique<SOEMLinkImpl>(ifname, device_num);
   return link;
 }
 
@@ -81,7 +82,7 @@ Result<bool, std::string> SOEMLinkImpl::Send(const size_t size, const uint8_t* b
   return _cnt.Send(size, buf);
 }
 
-Result<bool, std::string> SOEMLinkImpl::Read(uint8_t* rx, [[maybe_unused]] uint32_t buffer_len) {
+Result<bool, std::string> SOEMLinkImpl::Read(uint8_t* rx, [[maybe_unused]] size_t buffer_len) {
   if (!_cnt.is_open()) return Ok(false);
 
   return _cnt.Read(rx);

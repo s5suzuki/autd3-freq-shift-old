@@ -3,7 +3,7 @@
 // Created Date: 19/05/2020
 // Author: Shun Suzuki
 // -----
-// Last Modified: 14/04/2021
+// Last Modified: 16/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -29,44 +29,38 @@ using std::pair;
 using std::string;
 using std::vector;
 
-inline int Run(vector<autd::Device>& autd, autd::LinkPtr link) {
-  // using F = function<void(autd::ControllerPtr&)>;
-  // vector<pair<F, string>> examples = {pair(F{SimpleTest}, "Single Focal Point Test")};
+inline int Run(autd::ControllerPtr cnt) {
+  using F = function<void(autd::ControllerPtr&)>;
+  vector<pair<F, string>> examples = {pair(F{SimpleTest}, "Single Focal Point Test")};
 
-  // autd::Controller.Clear();
+  auto firm_info_list = cnt->firmware_info_list().unwrap();
+  for (auto&& firm_info : firm_info_list) cout << firm_info << endl;
 
-  // autd->Clear().unwrap();
-  // autd->Synchronize().unwrap();
+  cnt->Clear().unwrap();
+  cnt->Synchronize().unwrap();
 
-  // auto firm_info_list = autd->firmware_info_list().unwrap();
-  // for (auto&& firm_info : firm_info_list) cout << firm_info << endl;
+  while (true) {
+    for (size_t i = 0; i < examples.size(); i++) cout << "[" << i << "]: " << examples[i].second << endl;
 
-  // while (true) {
-  //   for (size_t i = 0; i < examples.size(); i++) cout << "[" << i << "]: " << examples[i].second << endl;
+    cout << "[Others]: finish." << endl;
 
-  //   cout << "[Others]: finish." << endl;
+    cout << "Choose number: ";
+    string in;
+    size_t idx = 0;
+    getline(cin, in);
+    if (std::stringstream s(in); !(s >> idx) || idx >= examples.size() || in == "\n") break;
 
-  //   cout << "Choose number: ";
-  //   string in;
-  //   size_t idx = 0;
-  //   getline(cin, in);
-  //   std::stringstream s(in);
-  //   const auto empty = in == "\n";
-  //   if (!(s >> idx) || idx >= examples.size() || empty) break;
+    auto fn = examples[idx].first;
+    fn(cnt);
 
-  //   auto fn = examples[idx].first;
-  //   fn(autd);
+    cout << "press any key to finish..." << endl;
+    cin.ignore();
 
-  //   cout << "press any key to finish..." << endl;
-  //   cin.ignore();
+    cout << "finish." << endl;
+    cnt->Stop().unwrap();
+  }
 
-  //   cout << "finish." << endl;
-  //   autd->FinishSTModulation().unwrap();
-  //   autd->Stop().unwrap();
-  // }
-
-  // autd->Clear().unwrap();
-  // autd->Close().unwrap();
+  cnt->Close().unwrap();
 
   return 0;
 }

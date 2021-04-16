@@ -33,8 +33,7 @@ bool Timer::SetInterval(uint32_t &interval_us) {
 }
 
 Result<bool, std::string> Timer::Start(const std::function<void()> &callback) {
-  auto res = this->Stop();
-  if (res.is_err()) return res;
+	if (auto res = this->Stop(); res.is_err()) return res;
   this->_cb = callback;
   this->_loop = true;
 
@@ -112,8 +111,7 @@ void Timer::MainLoop() const {
     QueryPerformanceCounter(&now);
     const auto elapsed = static_cast<double>(now.QuadPart - start.QuadPart) / static_cast<double>(freq.QuadPart) * TIME_SCALE;
 
-    const auto sleep_t = static_cast<int>(this->_interval_us * ++count - elapsed);
-    if (sleep_t > 0) {
+    if (const auto sleep_t = static_cast<int>(this->_interval_us * ++count - elapsed); sleep_t > 0) {
       MicroSleep(sleep_t);
     }
   }

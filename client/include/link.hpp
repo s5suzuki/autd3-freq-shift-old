@@ -3,7 +3,7 @@
 // Created Date: 01/06/2016
 // Author: Seki Inoue
 // -----
-// Last Modified: 14/04/2021
+// Last Modified: 16/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2016-2020 Hapis Lab. All rights reserved.
@@ -17,7 +17,6 @@
 #include "result.hpp"
 
 namespace autd {
-namespace link {
 /**
  * @brief Link is the interface to the AUTD device
  */
@@ -52,9 +51,9 @@ class Link {
    * @brief  Read data from devices
    * @return return Ok(whether succeeded to read), or Err(error msg) if some unrecoverable error occurred
    */
-  [[nodiscard]] virtual Result<bool, std::string> Read(uint8_t* rx, uint32_t buffer_len) = 0;
+  [[nodiscard]] virtual Result<bool, std::string> Read(uint8_t* rx, size_t buffer_len) = 0;
   [[nodiscard]] virtual bool is_open() = 0;
 };
-}  // namespace link
-using LinkPtr = std::shared_ptr<link::Link>;
+
+using LinkPtr = std::unique_ptr<Link>;
 }  // namespace autd
