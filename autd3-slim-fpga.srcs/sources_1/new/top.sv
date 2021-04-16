@@ -4,7 +4,7 @@
  * Created Date: 27/03/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 15/04/2021
+ * Last Modified: 16/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -58,30 +58,30 @@ logic sys_clk;
 logic bus_clk;
 logic reset;
 
-logic [8:0] time_cnt_for_ultrasound;
+(*mark_debug="true"*) logic [8:0] time_cnt_for_ultrasound;
 
-logic [3:0] cpu_select;
-logic [11:0] cpu_addr;
-logic [15:0] cpu_data_out;
-logic tr_wea;
-logic mod_wea;
-logic config_wea;
+(*mark_debug="true"*) logic [3:0] cpu_select;
+(*mark_debug="true"*) logic [10:0] cpu_addr;
+(*mark_debug="true"*) logic [15:0] cpu_data_out;
+(*mark_debug="true"*) logic tr_wea;
+(*mark_debug="true"*) logic mod_wea;
+(*mark_debug="true"*) logic config_wea;
 
-logic [7:0] duty[0:TRANS_NUM-1];
-logic [7:0] phase[0:TRANS_NUM-1];
-logic [7:0] mod;
+(*mark_debug="true"*) logic [7:0] duty[0:TRANS_NUM-1];
+(*mark_debug="true"*) logic [7:0] phase[0:TRANS_NUM-1];
+(*mark_debug="true"*) logic [7:0] mod;
 
-logic [7:0] ctrl_flags;
-logic [7:0] fpga_info;
-logic silent;
+(*mark_debug="true"*) logic [7:0] ctrl_flags;
+(*mark_debug="true"*) logic [7:0] fpga_info;
+(*mark_debug="true"*) logic silent;
 
-logic clk_sync;
-logic [11:0] mod_idx;
+(*mark_debug="true"*) logic clk_sync;
+(*mark_debug="true"*) logic [11:0] mod_idx;
 
 assign bus_clk = CPU_CKIO;
 assign reset = ~RESET_N;
 assign cpu_select = CPU_ADDR[16:13];
-assign cpu_addr = CPU_ADDR[12:1];
+assign cpu_addr = CPU_ADDR[11:1];
 assign CPU_DATA  = (~CPU_CS1_N && ~CPU_RD_N && CPU_RDWR) ? cpu_data_out : 16'bz;
 assign tr_wea = (cpu_select == BRAM_TR_SELECT) & (~CPU_WE0_N);
 assign mod_wea = (cpu_select == BRAM_MOD_SELECT) & (~CPU_WE0_N);
