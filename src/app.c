@@ -4,7 +4,7 @@
  * Created Date: 29/06/2020
  * Author: Shun Suzuki
  * -----
- * Last Modified: 14/04/2021
+ * Last Modified: 16/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -23,9 +23,9 @@
 #define MOD_BUF_SIZE (4000)
 #define MOD_FRAME_SIZE (124)
 
-#define BRAM_TR_SELECT (0)
-#define BRAM_MOD_SELECT (1)
-#define BRAM_CONFIG_SELECT (2)
+#define BRAM_TR_SELECT (0x00)
+#define BRAM_MOD_SELECT (0x01)
+#define BRAM_CONFIG_SELECT (0x0F)
 
 #define CTRL_FLAGS_ADDR (0)
 #define FPGA_INFO_ADDR (1)
@@ -38,6 +38,7 @@
 #define CMD_RD_FPGA_V_LSB (0x04)
 #define CMD_RD_FPGA_V_MSB (0x05)
 #define CMD_CLEAR (0x09)
+#define CMD_SYNCHRONIZE (0x0A)
 
 extern RX_STR0 _sRx0;
 extern RX_STR1 _sRx1;
@@ -45,6 +46,7 @@ extern TX_STR _sTx;
 
 static volatile uint8_t _header_id = 0;
 static volatile uint8_t _ctrl_flag = 0;
+static volatile uint8_t _cmd = 0;
 
 static volatile uint8_t _mod_buf[MOD_BUF_SIZE];
 static volatile uint16_t _mod_size = 0;
@@ -59,7 +61,7 @@ extern void update(void);
 typedef enum {
   MOD_BEGIN = 1 << 0,
   MOD_END = 1 << 1,
-  MOD_SYNC = 1 << 2,
+  //
   SILENT = 1 << 3,
   FORCE_FAN = 1 << 4,
 } RxGlobalControlFlags;
@@ -116,9 +118,10 @@ static uint16_t get_cpu_version(void) { return CPU_VERSION; }
 static uint16_t get_fpga_version(void) { return bram_read(BRAM_CONFIG_SELECT, FPGA_VER_ADDR); }
 
 void update(void) {
-  if ((_ctrl_flag & MOD_SYNC) != 0) {
+  if (_cmd == CMD_SYNCHRONIZE) {
+    _cmd = 0x00;
     sync_fpga_mod_clk();
-    _ctrl_flag &= ~MOD_SYNC;
+    _sTx.ack = ((uint16_t)_header_id) << 8;
   }
 }
 
@@ -132,6 +135,7 @@ void recv_ethercat(void) {
   if (header->msg_id != _header_id) {
     _ctrl_flag = header->control_flags;
     _header_id = header->msg_id;
+    _cmd = header->cmd;
 
     switch (header->cmd) {
       case CMD_OP:
@@ -157,19 +161,19 @@ void recv_ethercat(void) {
         break;
 
       case CMD_RD_CPU_V_LSB:
-        _sTx.ack = (((uint16_t)(header->msg_id)) << 8) | (get_cpu_version() & 0x00FF);
+        _sTx.ack = ((((uint16_t)(header->msg_id)) << 8) & 0xFF00) | (get_cpu_version() & 0x00FF);
         break;
 
       case CMD_RD_CPU_V_MSB:
-        _sTx.ack = (((uint16_t)(header->msg_id)) << 8) | ((get_cpu_version() & 0xFF00) >> 8);
+        _sTx.ack = ((((uint16_t)(header->msg_id)) << 8) & 0xFF00) | ((get_cpu_version() >> 8) & 0x00FF);
         break;
 
       case CMD_RD_FPGA_V_LSB:
-        _sTx.ack = (((uint16_t)(header->msg_id)) << 8) | (get_fpga_version() & 0x00FF);
+        _sTx.ack = ((((uint16_t)(header->msg_id)) << 8) & 0xFF00) | (get_fpga_version() & 0x00FF);
         break;
 
       case CMD_RD_FPGA_V_MSB:
-        _sTx.ack = (((uint16_t)(header->msg_id)) << 8) | ((get_fpga_version() & 0xFF00) >> 8);
+        _sTx.ack = ((((uint16_t)(header->msg_id)) << 8) & 0xFF00) | ((get_fpga_version() >> 8) & 0x00FF);
         break;
 
       case CMD_CLEAR:
