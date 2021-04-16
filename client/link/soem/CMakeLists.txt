@@ -31,7 +31,6 @@ add_library(link_soem STATIC
   ./src/autdsoem.hpp
   ./src/soemlink.cpp
   ./include/soemlink.hpp 
-  ./include/ec_config.hpp
   ${SOEM_SRC_FILES}
 )
 

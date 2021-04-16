@@ -18,6 +18,6 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif()
 
-add_executable(example_soem soem.cpp ${hpp_files})
+add_executable(example_soem soem.cpp runner.hpp ${hpp_files})
 target_link_libraries(example_soem link_soem)
 target_include_directories(example_soem PUBLIC ${PROJECT_SOURCE_DIR}/link/soem/include)

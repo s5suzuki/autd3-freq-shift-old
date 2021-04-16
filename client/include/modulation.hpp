@@ -3,7 +3,7 @@
 // Created Date: 04/11/2018
 // Author: Shun Suzuki
 // -----
-// Last Modified: 14/04/2021
+// Last Modified: 16/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2018-2020 Hapis Lab. All rights reserved.
@@ -22,13 +22,8 @@
 #include "result.hpp"
 
 namespace autd {
-namespace modulation {
 class Modulation;
-}
-using ModulationPtr = std::shared_ptr<modulation::Modulation>;
-}  // namespace autd
-
-namespace autd::modulation {
+using ModulationPtr = std::shared_ptr<Modulation>;
 
 /**
  * @brief Modulation controls the amplitude modulation
@@ -58,4 +53,4 @@ class Modulation {
   std::vector<uint8_t> _buffer;
   size_t _sent;
 };
-}  // namespace autd::modulation
+}  // namespace autd

@@ -3,7 +3,7 @@
 // Created Date: 11/04/2018
 // Author: Shun Suzuki
 // -----
-// Last Modified: 14/04/2021
+// Last Modified: 16/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2018-2020 Hapis Lab. All rights reserved.
@@ -24,35 +24,28 @@
 #include "result.hpp"
 
 namespace autd {
-namespace gain {
 class Gain;
-}
-using GainPtr = std::shared_ptr<gain::Gain>;
-}  // namespace autd
-
-namespace autd::gain {
-
-inline Float PosMod(const Float a, const Float b) { return a - floor(a / b) * b; }
-
-inline uint8_t ToDuty(const Float amp) noexcept {
-  const auto d = asin(amp) / PI;  //  duty (0 ~ 0.5)
-  return static_cast<uint8_t>(511 * d);
-}
-
-inline void CheckAndInit(const std::vector<Device>& devices, std::vector<AUTDDataArray>* data) {
-  assert(devices.size() != 0);
-
-  data->clear();
-
-  const auto num_device = devices.size();
-  data->resize(num_device);
-}
+using GainPtr = std::shared_ptr<Gain>;
 
 /**
  * @brief Gain controls the amplitude and phase of each transducer in the AUTD
  */
 class Gain {
  public:
+  static uint8_t ToDuty(const Float amp) noexcept {
+    const auto d = std::asin(amp) / PI;  //  duty (0 ~ 0.5)
+    return static_cast<uint8_t>(511 * d);
+  }
+
+  static void CheckAndInit(const std::vector<Device>& devices, std::vector<AUTDDataArray>* data) {
+    assert(devices.size() != 0);
+
+    data->clear();
+
+    const auto num_device = devices.size();
+    data->resize(num_device);
+  }
+
   /**
    * @brief Generate empty gain
    */
@@ -102,4 +95,4 @@ class Gain {
 
 using NullGain = Gain;
 
-}  // namespace autd::gain
+}  // namespace autd
