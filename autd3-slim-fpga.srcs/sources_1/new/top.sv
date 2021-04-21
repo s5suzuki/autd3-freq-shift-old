@@ -4,7 +4,7 @@
  * Created Date: 27/03/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 16/04/2021
+ * Last Modified: 21/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -36,6 +36,8 @@ localparam int TRANS_NUM = 249;
 
 localparam int SYS_CLK_FREQ = 20400000;
 localparam int ULTRASOUND_FREQ = 40000;
+localparam int REF_CLK_CNT_CYCLE = SYS_CLK_FREQ;
+localparam int ULTRASOUND_CNT_CYCLE = SYS_CLK_FREQ/ULTRASOUND_FREQ;
 
 localparam int MOD_FREQ = 4000;
 localparam int MOD_BUF_SIZE = 4000;
@@ -58,25 +60,25 @@ logic sys_clk;
 logic bus_clk;
 logic reset;
 
-(*mark_debug="true"*) logic [8:0] time_cnt_for_ultrasound;
+logic [8:0] time_cnt_for_ultrasound;
 
-(*mark_debug="true"*) logic [3:0] cpu_select;
-(*mark_debug="true"*) logic [10:0] cpu_addr;
-(*mark_debug="true"*) logic [15:0] cpu_data_out;
-(*mark_debug="true"*) logic tr_wea;
-(*mark_debug="true"*) logic mod_wea;
-(*mark_debug="true"*) logic config_wea;
+logic [3:0] cpu_select;
+logic [10:0] cpu_addr;
+logic [15:0] cpu_data_out;
+logic tr_wea;
+logic mod_wea;
+logic config_wea;
 
-(*mark_debug="true"*) logic [7:0] duty[0:TRANS_NUM-1];
-(*mark_debug="true"*) logic [7:0] phase[0:TRANS_NUM-1];
-(*mark_debug="true"*) logic [7:0] mod;
+logic [7:0] duty[0:TRANS_NUM-1];
+logic [7:0] phase[0:TRANS_NUM-1];
+logic [7:0] mod;
 
-(*mark_debug="true"*) logic [7:0] ctrl_flags;
-(*mark_debug="true"*) logic [7:0] fpga_info;
-(*mark_debug="true"*) logic silent;
+logic [7:0] ctrl_flags;
+logic [7:0] fpga_info;
+logic silent;
 
-(*mark_debug="true"*) logic clk_sync;
-(*mark_debug="true"*) logic [11:0] mod_idx;
+logic clk_sync;
+logic [11:0] mod_idx;
 
 assign bus_clk = CPU_CKIO;
 assign reset = ~RESET_N;
@@ -101,14 +103,15 @@ ultrasound_cnt_clk_gen ultrasound_cnt_clk_gen(
 //////////////////////////////////// Synchronize ///////////////////////////////////////////
 logic [2:0] sync0;
 logic sync0_edge;
-
 logic clk_sync_rst;
-logic [12:0] mod_cnt;
-logic [11:0] mod_idx_sync;
 
-localparam int MOD_IDX_SYNC_STEP = MOD_FREQ/SYNC0_FREQ;
+logic [$clog2(REF_CLK_CNT_CYCLE)-1:0] ref_clk_cnt;
+logic [$clog2(REF_CLK_CNT_CYCLE)-1:0] ref_clk_cnt_sync;
+
+localparam int REF_CLK_SYNC_STEP = SYS_CLK_FREQ/SYNC0_FREQ;
 
 assign sync0_edge = (sync0 == 3'b011);
+assign mod_idx = ref_clk_cnt/MOD_CNT_CYCLE;
 
 always_ff @(posedge sys_clk) begin
     if (reset) begin
@@ -124,7 +127,7 @@ always_ff @(posedge sys_clk) begin
         time_cnt_for_ultrasound <= 0;
     end
     else begin
-        time_cnt_for_ultrasound <= (time_cnt_for_ultrasound == 9'd509) ? 0 : time_cnt_for_ultrasound + 1;
+        time_cnt_for_ultrasound <= (time_cnt_for_ultrasound == (ULTRASOUND_CNT_CYCLE - 1)) ? 0 : time_cnt_for_ultrasound + 1;
     end
 end
 
@@ -132,39 +135,36 @@ always_ff @(posedge sys_clk) begin
     if (reset) begin
         clk_sync_rst <= 0;
     end
-    if (clk_sync) begin
-        clk_sync_rst <= 1;
+    else if (sync0_edge) begin
+        if (clk_sync) begin
+            clk_sync_rst <= 1;
+        end
+        else begin
+            clk_sync_rst <= 0;
+        end
     end
     else begin
-        clk_sync_rst <= 0;
+        clk_sync_rst <= clk_sync_rst;
     end
 end
 
 always_ff @(posedge sys_clk) begin
     if (reset | (sync0_edge & clk_sync & ~clk_sync_rst)) begin
-        mod_cnt <= 0;
-        mod_idx <= 0;
-        mod_idx_sync <= 0;
+        ref_clk_cnt <= 0;
+        ref_clk_cnt_sync <= 0;
     end
     else if (sync0_edge) begin
-        mod_cnt <= 0;
-        if (mod_idx_sync + MOD_IDX_SYNC_STEP == MOD_BUF_SIZE) begin
-            mod_idx <= 0;
-            mod_idx_sync <= 0;
+        if (ref_clk_cnt_sync + REF_CLK_SYNC_STEP == REF_CLK_CNT_CYCLE) begin
+            ref_clk_cnt <= 0;
+            ref_clk_cnt_sync <= 0;
         end
         else begin
-            mod_idx <= mod_idx_sync + MOD_IDX_SYNC_STEP;
-            mod_idx_sync <= mod_idx_sync + MOD_IDX_SYNC_STEP;
+            ref_clk_cnt <= ref_clk_cnt_sync + REF_CLK_SYNC_STEP;
+            ref_clk_cnt_sync <= ref_clk_cnt_sync + REF_CLK_SYNC_STEP;
         end
     end
     else begin
-        if (mod_cnt == (MOD_CNT_CYCLE - 1)) begin
-            mod_cnt <= 0;
-            mod_idx <= (mod_idx == (MOD_BUF_SIZE - 1)) ? 0 : mod_idx + 1;
-        end
-        else begin
-            mod_cnt <= mod_cnt + 1;
-        end
+        ref_clk_cnt <= (ref_clk_cnt == (REF_CLK_CNT_CYCLE - 1)) ? 0 : ref_clk_cnt + 1;
     end
 end
 //////////////////////////////////// Synchronize ///////////////////////////////////////////
@@ -244,7 +244,7 @@ always_ff @(posedge sys_clk) begin
         duty <= '{TRANS_NUM{8'h00}};
         phase <= '{TRANS_NUM{8'h00}};
     end
-    else if (time_cnt_for_ultrasound == 9'd509) begin
+    else if (time_cnt_for_ultrasound == (ULTRASOUND_CNT_CYCLE - 1)) begin
         duty <= duty_buf;
         phase <= phase_buf;
     end
@@ -350,38 +350,5 @@ function automatic [7:0] modulate_duty;
     input [7:0] mod;
     modulate_duty = ((duty + 17'd1) * (mod + 17'd1) - 17'd1) >> 8;
 endfunction
-
-/////////////////////////////////////// Debug //////////////////////////////////////////////
-logic gpo_0, gpo_1, gpo_2, gpo_3;
-logic mod_cnt_rst;
-
-assign GPIO_OUT = {gpo_3, gpo_2, gpo_1, gpo_0};
-
-always_ff @(posedge sys_clk) begin
-    if (reset) begin
-        mod_cnt_rst <= 0;
-    end
-    if (mod_cnt == 0) begin
-        mod_cnt_rst <= 1;
-    end
-    else begin
-        mod_cnt_rst <= 0;
-    end
-end
-
-always_ff @(posedge sys_clk) begin
-    if (reset) begin
-        gpo_0 <= 0;
-        gpo_1 <= 0;
-        gpo_2 <= 0;
-        gpo_3 <= 0;
-    end
-    else begin
-        gpo_0 <= (sync0_edge) ? ~gpo_0 : gpo_0;
-        gpo_1 <= (time_cnt_for_ultrasound == 0) ? ~gpo_1 : gpo_1;
-        gpo_2<= ((mod_cnt == 0) & ~mod_cnt_rst) ? ~gpo_2 : gpo_2;
-    end
-end
-/////////////////////////////////////// Debug //////////////////////////////////////////////
 
 endmodule
