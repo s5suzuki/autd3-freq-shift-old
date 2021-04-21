@@ -38,6 +38,7 @@ else()
 endif()
 
 if(ENABLE_LINT)
+  execute_process(COMMAND git -C ${PROJECT_SOURCE_DIR} submodule update --init --recursive -- ${PROJECT_SOURCE_DIR}/deps/cpplint)
   file(GLOB_RECURSE lint_files lib/*.cpp lib/*.hpp include/*.hpp capi/*.cpp link/*.cpp link/*.hpp)
   ADD_CUSTOM_TARGET(cpplint
     python

@@ -50,14 +50,14 @@ struct Device {
   Vector3 x_direction() { return this->_x_direction; }
   Vector3 y_direction() { return this->_y_direction; }
   Vector3 z_direction() { return this->_z_direction; }
-  std::shared_ptr<Vector3[]> global_trans_positions() { return this->_global_trans_positions; }
+  std::unique_ptr<Vector3[]>& global_trans_positions() { return this->_global_trans_positions; }
 
  private:
-  Device(Vector3 x_direction, Vector3 y_direction, Vector3 z_direction, std::shared_ptr<Vector3[]> global_trans_positions)
-      : _x_direction(x_direction), _y_direction(y_direction), _z_direction(z_direction), _global_trans_positions(global_trans_positions) {}
+  Device(Vector3 x_direction, Vector3 y_direction, Vector3 z_direction, std::unique_ptr<Vector3[]> global_trans_positions)
+      : _x_direction(x_direction), _y_direction(y_direction), _z_direction(z_direction), _global_trans_positions(std::move(global_trans_positions)) {}
   Vector3 _x_direction;
   Vector3 _y_direction;
   Vector3 _z_direction;
-  std::shared_ptr<Vector3[]> _global_trans_positions;
+  std::unique_ptr<Vector3[]> _global_trans_positions;
 };
 }  // namespace autd
