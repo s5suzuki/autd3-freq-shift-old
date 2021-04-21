@@ -75,9 +75,9 @@ Result<bool, std::string> TwinCATLink::Open() {
 }
 
 Result<bool, std::string> TwinCATLink::Close() {
-  this->_port = 0;
   const auto port_close = reinterpret_cast<tc_ads_port_close_ex>(GetProcAddress(this->_lib, TCADS_ADS_PORT_CLOSE_EX));
   const auto res = (*port_close)(this->_port);
+  this->_port = 0;
   if (res == 0) return Ok(true);
   std::stringstream ss;
   ss << "Error on closing (local): " << std::hex << res;
