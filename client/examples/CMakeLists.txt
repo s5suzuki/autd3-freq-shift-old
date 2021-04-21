@@ -17,7 +17,13 @@ else()
   link_libraries(rt)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif()
-
+ 
 add_executable(example_soem soem.cpp runner.hpp ${hpp_files})
 target_link_libraries(example_soem link_soem)
 target_include_directories(example_soem PUBLIC ${PROJECT_SOURCE_DIR}/link/soem/include)
+
+if(WIN32)
+  add_executable(example_twincat twincat.cpp runner.hpp ${hpp_files})
+  target_link_libraries(example_twincat link_twincat)
+  target_include_directories(example_twincat PUBLIC ${PROJECT_SOURCE_DIR}/link/twincat/include)
+endif()

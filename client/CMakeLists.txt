@@ -70,6 +70,10 @@ endif()
 set(SOEM_PATH ${PROJECT_SOURCE_DIR}/deps/SOEM/SOEM)
 add_subdirectory(link/soem)
 
+if(WIN32)
+  add_subdirectory(link/twincat)
+endif()
+
 if(BUILD_DOC)
   add_subdirectory(doc)
 endif()
