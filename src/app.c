@@ -4,7 +4,7 @@
  * Created Date: 29/06/2020
  * Author: Shun Suzuki
  * -----
- * Last Modified: 16/04/2021
+ * Last Modified: 21/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -91,6 +91,7 @@ static void clear(void) {
   word_set_volatile(&base[addr], 0x0000, TRANS_NUM);
 
   bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, SILENT);
+  bram_write(BRAM_CONFIG_SELECT, CLK_SYNC_ADDR, 0);
 }
 
 void init_app(void) { clear(); }
@@ -104,13 +105,12 @@ static void sync_fpga_mod_clk(void) {
     wait_ns(1000 * MICRO_SECONDS);
   }
 
-  sys_time = mod1e9_u64(ECATC.DC_SYS_TIME.LONGLONG + 1000 * MICRO_SECONDS);
+  sys_time = mod1e9_u64(ECATC.DC_SYS_TIME.LONGLONG);
   while (sys_time > 50 * MICRO_SECONDS) {
-    sys_time = mod1e9_u64(ECATC.DC_SYS_TIME.LONGLONG + 1000 * MICRO_SECONDS);
+    sys_time = mod1e9_u64(ECATC.DC_SYS_TIME.LONGLONG);
   }
-  wait_ns(50 * MICRO_SECONDS);
   bram_write(BRAM_CONFIG_SELECT, CLK_SYNC_ADDR, 1);
-  asm volatile("dmb");
+  asm volatile("isb");
 }
 
 static uint16_t get_cpu_version(void) { return CPU_VERSION; }
