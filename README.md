@@ -1,13 +1,12 @@
-![build](https://github.com/shinolab/autd3-library-software/workflows/build/badge.svg)
-![Upload Release Asset](https://github.com/shinolab/autd3-library-software/workflows/Upload%20Release%20Asset/badge.svg)
+# AUTD3-Lite
 
-# [AUTD3-Lite](https://hapislab.org/airborne-ultrasound-tactile-display?lang=en)
-
-Lightweight version of AUTD3 library.
+Lightweight version of [AUTD3 library](https://github.com/shinolab/autd3-library-software).
 
 Version: 1.0.0-lite
 
 * The firmware codes are available at [here](https://github.com/shinolab/autd3-lite-firmware).
+
+## :books: [API document](https://shinolab.github.io/autd3-lite-software/index.html)
 
 ## :memo: Versioning
 
