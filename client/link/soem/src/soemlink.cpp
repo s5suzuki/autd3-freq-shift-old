@@ -55,7 +55,7 @@ class SOEMLinkImpl final : public SOEMLink {
   autdsoem::SOEMController _cnt;
   size_t _device_num = 0;
   std::string _ifname;
-  autdsoem::ECConfig _config{};
+  autdsoem::EcConfig _config{};
 };
 
 LinkPtr SOEMLink::Create(const std::string& ifname, const size_t device_num) {
@@ -64,7 +64,7 @@ LinkPtr SOEMLink::Create(const std::string& ifname, const size_t device_num) {
 }
 
 Result<bool, std::string> SOEMLinkImpl::Open() {
-  _config = autdsoem::ECConfig{};
+  _config = autdsoem::EcConfig{};
   _config.ec_sm3_cycle_time_ns = EC_SM3_CYCLE_TIME_NANO_SEC;
   _config.ec_sync0_cycle_time_ns = EC_SYNC0_CYCLE_TIME_NANO_SEC;
   _config.header_size = HEADER_SIZE;

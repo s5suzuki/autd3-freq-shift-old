@@ -3,7 +3,7 @@
 // Created Date: 19/05/2020
 // Author: Shun Suzuki
 // -----
-// Last Modified: 16/04/2021
+// Last Modified: 21/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -17,7 +17,7 @@
 
 using namespace std;
 
-string GetAdapterName() {
+string get_adapter_name() {
   size_t size;
   auto adapters = autd::link::SOEMLink::EnumerateAdapters(&size);
   for (size_t i = 0; i < size; i++) {
@@ -37,11 +37,12 @@ int main() {
   try {
     auto cnt = autd::Controller::Create();
 
-    cnt->devices().emplace_back(autd::Device::Create(autd::Vector3(0, 0, 0), autd::Vector3(0, 0, 0)));
+    cnt->devices().emplace_back(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)));
+    cnt->devices().emplace_back(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)));
 
     // If you have already recognized the EtherCAT adapter name, you can write it directly like below.
     // auto ifname = "\\Device\\NPF_{B5B631C6-ED16-4780-9C4C-3941AE8120A6}";
-    const auto ifname = GetAdapterName();
+    const auto ifname = get_adapter_name();
     auto link = autd::link::SOEMLink::Create(ifname, cnt->devices().size());
     auto res = cnt->OpenWith(std::move(link));
 
@@ -54,7 +55,7 @@ int main() {
       return ENXIO;
     }
 
-    return Run(std::move(cnt));
+    return run(std::move(cnt));
   } catch (exception& e) {
     std::cerr << e.what() << std::endl;
     return ENXIO;

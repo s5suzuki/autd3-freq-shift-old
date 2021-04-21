@@ -88,7 +88,7 @@ class SineModulation final : public autd::Modulation {
   float _offset = 0.5;
 };
 
-inline void SimpleTest(autd::ControllerPtr& cnt) {
+inline void simple_test(autd::ControllerPtr& cnt) {
   cnt->silent_mode() = true;
 
   const auto m = SineModulation::Create(150);

@@ -3,7 +3,7 @@
 // Created Date: 24/08/2019
 // Author: Shun Suzuki
 // -----
-// Last Modified: 16/04/2021
+// Last Modified: 21/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2019-2020 Hapis Lab. All rights reserved.
@@ -22,7 +22,7 @@ using EtherCATAdapter = std::pair<std::string, std::string>;
 using EtherCATAdapters = std::vector<EtherCATAdapter>;
 
 /**
- * @brief Link using [SOEM](https://github.com/OpenEtherCATsociety/SOEM)
+ * @brief Link using [SOEM](https://github.com/OpenEtherCATSociety/SOEM)
  */
 class SOEMLink : virtual public Link {
  public:

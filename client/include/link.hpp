@@ -1,12 +1,12 @@
 ﻿// File: link.hpp
-// Project: lib
-// Created Date: 01/06/2016
-// Author: Seki Inoue
+// Project: include
+// Created Date: 14/04/2021
+// Author: Shun Suzuki
 // -----
-// Last Modified: 16/04/2021
+// Last Modified: 21/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
-// Copyright (c) 2016-2020 Hapis Lab. All rights reserved.
+// Copyright (c) 2021 Hapis Lab. All rights reserved.
 //
 
 #pragma once

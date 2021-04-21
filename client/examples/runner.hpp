@@ -29,9 +29,9 @@ using std::pair;
 using std::string;
 using std::vector;
 
-inline int Run(autd::ControllerPtr cnt) {
-  using F = function<void(autd::ControllerPtr&)>;
-  vector<pair<F, string>> examples = {pair(F{SimpleTest}, "Single Focal Point Test")};
+inline int run(autd::ControllerPtr cnt) {
+  using f = function<void(autd::ControllerPtr&)>;
+  vector<pair<f, string>> examples = {pair(f{simple_test}, "Single Focal Point Test")};
 
   auto firm_info_list = cnt->firmware_info_list().unwrap();
   for (auto&& firm_info : firm_info_list) cout << firm_info << endl;

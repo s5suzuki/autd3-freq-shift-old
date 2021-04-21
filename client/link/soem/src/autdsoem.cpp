@@ -35,8 +35,8 @@
 
 namespace autd::autdsoem {
 
-static std::atomic<bool> AUTD3_RT_LOCK(false);
-static std::atomic<bool> AUTD3_LIB_SEND_COND(false);
+static std::atomic autd3_rt_lock(false);
+static std::atomic autd3_lib_send_cond(false);
 
 bool SOEMController::is_open() const { return _is_open; }
 
@@ -46,7 +46,7 @@ Result<bool, std::string> SOEMController::Send(size_t size, const uint8_t* buf) 
   {
     auto buf_ = std::make_unique<uint8_t[]>(size);
     std::memcpy(&buf_[0], &buf[0], size);
-    std::unique_lock<std::mutex> lk(_send_mtx);
+    std::unique_lock lk(_send_mtx);
     _send_q.push(std::pair(std::move(buf_), size));
   }
   _send_cond.notify_all();
@@ -73,7 +73,7 @@ void SOEMController::SetupSync0(const bool activate, const uint32_t cycle_time_n
   }
 }
 
-Result<bool, std::string> SOEMController::Open(const char* ifname, const size_t dev_num, const ECConfig config) {
+Result<bool, std::string> SOEMController::Open(const char* ifname, const size_t dev_num, const EcConfig config) {
   _dev_num = dev_num;
   _config = config;
   _output_frame_size = (config.header_size + config.body_size) * _dev_num;
@@ -122,11 +122,11 @@ Result<bool, std::string> SOEMController::Open(const char* ifname, const size_t 
   this->_timer.SetInterval(interval_us);
 
   if (auto res = this->_timer.Start([]() {
-        if (auto expected = false; AUTD3_RT_LOCK.compare_exchange_weak(expected, true)) {
-          const auto pre = AUTD3_LIB_SEND_COND.load(std::memory_order_acquire);
+        if (auto expected = false; autd3_rt_lock.compare_exchange_weak(expected, true)) {
+          const auto pre = autd3_lib_send_cond.load(std::memory_order_acquire);
           ec_send_processdata();
-          if (!pre) AUTD3_LIB_SEND_COND.store(true, std::memory_order_release);
-          AUTD3_RT_LOCK.store(false, std::memory_order_release);
+          if (!pre) autd3_lib_send_cond.store(true, std::memory_order_release);
+          autd3_rt_lock.store(false, std::memory_order_release);
           ec_receive_processdata(EC_TIMEOUTRET);
         }
       });
@@ -146,7 +146,7 @@ Result<bool, std::string> SOEMController::Close() {
   _send_cond.notify_all();
   if (std::this_thread::get_id() != _send_thread.get_id() && this->_send_thread.joinable()) this->_send_thread.join();
   {
-    std::unique_lock<std::mutex> lk(_send_mtx);
+    std::unique_lock lk(_send_mtx);
     std::queue<std::pair<std::unique_ptr<uint8_t[]>, size_t>>().swap(_send_q);
   }
 
@@ -174,7 +174,7 @@ void SOEMController::CreateSendThread(size_t header_size, size_t body_size) {
       std::unique_ptr<uint8_t[]> buf = nullptr;
       size_t size = 0;
       {
-        std::unique_lock<std::mutex> lk(_send_mtx);
+        std::unique_lock lk(_send_mtx);
         _send_cond.wait(lk, [&] { return !_send_q.empty() || !_is_open; });
         if (!_send_q.empty()) {
           auto [fst, snd] = move(_send_q.front());
@@ -193,8 +193,8 @@ void SOEMController::CreateSendThread(size_t header_size, size_t body_size) {
         }
 
         {
-          AUTD3_LIB_SEND_COND.store(false, std::memory_order_release);
-          while (!AUTD3_LIB_SEND_COND.load(std::memory_order_acquire) && _is_open) {
+          autd3_lib_send_cond.store(false, std::memory_order_release);
+          while (!autd3_lib_send_cond.load(std::memory_order_acquire) && _is_open) {
           }
         }
 

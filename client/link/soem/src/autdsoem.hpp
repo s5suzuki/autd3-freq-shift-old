@@ -23,7 +23,7 @@
 
 namespace autd::autdsoem {
 
-struct ECConfig {
+struct EcConfig {
   uint32_t ec_sm3_cycle_time_ns;
   uint32_t ec_sync0_cycle_time_ns;
   size_t header_size;
@@ -40,7 +40,7 @@ class SOEMController {
   SOEMController(SOEMController&& obj) = delete;
   SOEMController& operator=(SOEMController&& obj) = delete;
 
-  [[nodiscard]] Result<bool, std::string> Open(const char* ifname, size_t dev_num, ECConfig config);
+  [[nodiscard]] Result<bool, std::string> Open(const char* ifname, size_t dev_num, EcConfig config);
   [[nodiscard]] Result<bool, std::string> Close();
 
   [[nodiscard]] bool is_open() const;
@@ -57,7 +57,7 @@ class SOEMController {
   size_t _output_frame_size = 0;
   uint32_t _sync0_cyc_time = 0;
   size_t _dev_num = 0;
-  ECConfig _config;
+  EcConfig _config;
   bool _is_open = false;
 
   std::queue<std::pair<std::unique_ptr<uint8_t[]>, size_t>> _send_q;
