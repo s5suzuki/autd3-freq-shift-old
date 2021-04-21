@@ -33,18 +33,17 @@ inline int run(autd::ControllerPtr cnt) {
   using f = function<void(autd::ControllerPtr&)>;
   vector<pair<f, string>> examples = {pair(f{simple_test}, "Single Focal Point Test")};
 
-  auto firm_info_list = cnt->firmware_info_list().unwrap();
-  for (auto&& firm_info : firm_info_list) cout << firm_info << endl;
-
   cnt->Clear().unwrap();
   cnt->Synchronize().unwrap();
 
+  auto firm_info_list = cnt->firmware_info_list().unwrap();
+  for (auto&& firm_info : firm_info_list) cout << firm_info << endl;
+	
   while (true) {
     for (size_t i = 0; i < examples.size(); i++) cout << "[" << i << "]: " << examples[i].second << endl;
-
     cout << "[Others]: finish." << endl;
 
-    cout << "Choose number: ";
+  	cout << "Choose number: ";
     string in;
     size_t idx = 0;
     getline(cin, in);
@@ -60,6 +59,7 @@ inline int run(autd::ControllerPtr cnt) {
     cnt->Stop().unwrap();
   }
 
+  cnt->Clear().unwrap();
   cnt->Close().unwrap();
 
   return 0;
