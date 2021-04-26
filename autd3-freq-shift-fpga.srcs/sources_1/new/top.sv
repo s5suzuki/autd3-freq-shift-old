@@ -263,4 +263,23 @@ generate begin:TRANSDUCERS_GEN
     end
 endgenerate
 
+/////////////////////////////////////// Debug //////////////////////////////////////////////
+logic gpo_0, gpo_1, gpo_2, gpo_3;
+
+assign GPIO_OUT = {gpo_3, gpo_2, gpo_1, gpo_0};
+
+always_ff @(posedge sys_clk) begin
+    if (reset) begin
+        gpo_0 <= 0;
+        gpo_1 <= 0;
+        gpo_2 <= 0;
+        gpo_3 <= 0;
+    end
+    else begin
+        gpo_0 <= (sync0_edge) ? ~gpo_0 : gpo_0;
+        gpo_1 <= (time_cnt_for_ultrasound == (cycle - 1)) ? ~gpo_1 : gpo_1;
+    end
+end
+/////////////////////////////////////// Debug //////////////////////////////////////////////
+
 endmodule
