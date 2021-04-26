@@ -4,7 +4,7 @@
  * Created Date: 11/04/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 11/04/2021
+ * Last Modified: 26/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -15,15 +15,15 @@
 
 module sim_pwm_generator();
 
-localparam int ULTRASOUND_CNT_MAX = 510;
+localparam int ULTRASOUND_CNT_CYCLE = 2500;
 
 logic MRCC_25P6M;
 logic RST;
 
 logic ultrasound_cnt_clk;
-logic [8:0] time_cnt;
-logic [7:0] duty;
-logic [7:0] phase;
+logic [15:0] time_cnt;
+logic [15:0] duty;
+logic [15:0] phase;
 logic pwm_out;
 
 ultrasound_cnt_clk_gen ultrasound_cnt_clk_gen(
@@ -34,8 +34,9 @@ ultrasound_cnt_clk_gen ultrasound_cnt_clk_gen(
 
 pwm_generator pwm_generator(
                   .TIME(time_cnt),
+                  .CYCLE(ULTRASOUND_CNT_CYCLE),
                   .DUTY(duty),
-                  .PHASE(phase),
+                  .PHASE_DELAY(phase),
                   .PWM_OUT(pwm_out)
               );
 
@@ -48,18 +49,41 @@ initial begin
     #1000;
     RST = 0;
     #100000;
-    duty = 8'd255;
+    phase = 1250;
+    duty = 1250;
     #100000;
-    phase = 8'd255;
+    phase = 1250;
+    duty = 1251;
     #100000;
-    duty = 8'd1;
-    phase = 8'd255;
+    phase = 0;
+    duty = 1250;
+    #100000;
+    phase = 2000;
+    duty = 1250;
+    #100000;
+    phase = 0;
+    duty = 0;
+    #100000;
+    phase = 0;
+    duty = 2500;
+    #100000;
+    phase = 1250;
+    duty = 2500;
+    #100000;
+    phase = 0;
+    duty = 1;
+
     #100000;
     $finish;
 end
 
 always @(posedge ultrasound_cnt_clk) begin
-    time_cnt <= (time_cnt == (ULTRASOUND_CNT_MAX-1)) ? 0 : time_cnt + 1;
+    if (RST) begin
+        time_cnt <= 0;
+    end
+    else begin
+        time_cnt <= (time_cnt == (ULTRASOUND_CNT_CYCLE-1)) ? 0 : time_cnt + 1;
+    end
 end
 
 always begin

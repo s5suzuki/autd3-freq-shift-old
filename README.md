@@ -1,8 +1,8 @@
 # README
 
-This is a lightweight FPGA firmware of AUTD3.
+This firmware is for changing the ultrasound frequency.
 
-Version: 1.0.0-lite
+Version: 0.1.0-alpha
 
 The code is written in SystemVerilog with Vivado 2020.2.
 
@@ -30,7 +30,7 @@ The code is written in SystemVerilog with Vivado 2020.2.
 * BRAM_SELECT: High 4bit
 * BRAM_ADDR: Low 12bit
 
-| BRAM_SELECT | BRAM_ADDR | DATA                             | R/W |
+| BRAM_SELECT | BRAM_ADDR | DATA 32 bit                           | R/W |
 |-------------|-----------|----------------------------------|-----|
 | 0x0         | 0x000    | duty[0]/phase[0]                 | R   |
 | 　          | ︙      | ︙                              | ︙   |
@@ -38,17 +38,16 @@ The code is written in SystemVerilog with Vivado 2020.2.
 | 　          | 0x0F9    | unused                           | -   |
 | 　          | ︙      | ︙                              | ︙   |
 | 　          | 0x0FF    | unused                           | -   |
-| 0x1         | 0x000    | mod[0]                    | R   |
-| 　          | 0x001    | mod[1]                    | R  |
-| 　          | ︙        | ︙                               | ︙  |
-| 　          | 0xF9F    | mod[3999]              | R   |
-| 　          | 0xFA0    | unused                           | -  |
-| 　          | ︙        | ︙                               | ︙  |
-| 　          | 0xFFF    | unused                           | -　  |
+
+| BRAM_SELECT | BRAM_ADDR | DATA 16 bit                          | R/W |
+|-------------|-----------|----------------------------------|-----|
 | 0x2         | 0x000   | 7:0 = ctrl_flag                    | R   |
 | 　          | 0x001   | 7:0 = fpga_info            | W   |
-| 　          | 0x002   | 0 = mod_clk_sync_flag               | R   |
-| 　          | 0x003   | unused                           | -  |
+| 　          | 0x002   | unused                           | -  |
+| 　          | ︙        | ︙                               | ︙  |
+| 　          | 0x00E   | unused                           | -　  |
+| 　          | 0x010   | ultrasound cycle                           | R  |
+| 　          | 0x011   | unused                           | -  |
 | 　          | ︙        | ︙                               | ︙  |
 | 　          | 0x0FE   | unused                           | -　  |
 | 　          | 0x0FF   | fpga_version                    | -   |
@@ -57,7 +56,7 @@ The code is written in SystemVerilog with Vivado 2020.2.
 
 | Version number | Version |
 |----------------|---------|
-| 4096           | v1.0-lite    |
+| 61440          | v0.1-alpha    |
 
 # Author
 

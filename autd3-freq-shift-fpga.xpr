@@ -44,20 +44,20 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
-    <Option Name="WTXSimLaunchSim" Val="32"/>
+    <Option Name="WTXSimLaunchSim" Val="55"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="15"/>
-    <Option Name="WTModelSimExportSim" Val="15"/>
-    <Option Name="WTQuestaExportSim" Val="15"/>
-    <Option Name="WTIesExportSim" Val="15"/>
-    <Option Name="WTVcsExportSim" Val="15"/>
-    <Option Name="WTRivieraExportSim" Val="15"/>
-    <Option Name="WTActivehdlExportSim" Val="15"/>
+    <Option Name="WTXSimExportSim" Val="18"/>
+    <Option Name="WTModelSimExportSim" Val="18"/>
+    <Option Name="WTQuestaExportSim" Val="18"/>
+    <Option Name="WTIesExportSim" Val="18"/>
+    <Option Name="WTVcsExportSim" Val="18"/>
+    <Option Name="WTRivieraExportSim" Val="18"/>
+    <Option Name="WTActivehdlExportSim" Val="18"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -73,6 +73,13 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
+      <File Path="$PSRCDIR/sources_1/new/pwm_generator.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/new/cvt_uid.vh">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -81,30 +88,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/top.sv">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/pwm_generator.sv">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/transducer.sv">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/silent_lpf.sv">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -137,24 +120,21 @@
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1" RelGenDir="$PGENDIR/sim_1">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sim_1/new/sim_transducer.sv">
+      <File Path="$PSRCDIR/sim_1/new/sim_pwm_generator.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sim_1/new/sim_pwm_generator.sv">
+      <File Path="$PPRDIR/sim_pwm_generator_behav.wcfg">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="sim_transducer"/>
+        <Option Name="TopModule" Val="sim_pwm_generator"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
@@ -164,26 +144,13 @@
         <Option Name="PamSignalDriverFile" Val="xil_bypass_driver"/>
         <Option Name="PamPseudoTop" Val="pseudo_tb"/>
         <Option Name="SrcSet" Val="sources_1"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/sim_pwm_generator_behav.wcfg"/>
       </Config>
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
       <Filter Type="Utils"/>
       <Config>
         <Option Name="TopAutoSet" Val="TRUE"/>
-      </Config>
-    </FileSet>
-    <FileSet Name="lpf_40k_500" Type="BlockSrcs" RelSrcDir="$PSRCDIR/lpf_40k_500" RelGenDir="$PGENDIR/lpf_40k_500">
-      <File Path="$PSRCDIR/sources_1/ip/lpf_40k_500/lpf_40k_500.xci">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <Config>
-        <Option Name="TopModule" Val="lpf_40k_500"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
       </Config>
     </FileSet>
     <FileSet Name="ultrasound_cnt_clk_gen" Type="BlockSrcs" RelSrcDir="$PSRCDIR/ultrasound_cnt_clk_gen" RelGenDir="$PGENDIR/ultrasound_cnt_clk_gen">
@@ -209,19 +176,6 @@
       </File>
       <Config>
         <Option Name="TopModule" Val="tr_bram"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-      </Config>
-    </FileSet>
-    <FileSet Name="mod_bram" Type="BlockSrcs" RelSrcDir="$PSRCDIR/mod_bram" RelGenDir="$PGENDIR/mod_bram">
-      <File Path="$PSRCDIR/sources_1/ip/mod_bram/mod_bram.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <Config>
-        <Option Name="TopModule" Val="mod_bram"/>
         <Option Name="UseBlackboxStub" Val="1"/>
       </Config>
     </FileSet>
@@ -267,16 +221,6 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="lpf_40k_500_synth_1" Type="Ft3:Synth" SrcSet="lpf_40k_500" Part="xc7a200tfbg676-2" ConstrsSet="lpf_40k_500" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/lpf_40k_500_synth_1" IncludeInArchive="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/lpf_40k_500_synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2020"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
     <Run Id="ultrasound_cnt_clk_gen_synth_1" Type="Ft3:Synth" SrcSet="ultrasound_cnt_clk_gen" Part="xc7a200tfbg676-2" ConstrsSet="ultrasound_cnt_clk_gen" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/ultrasound_cnt_clk_gen_synth_1" IncludeInArchive="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/ultrasound_cnt_clk_gen_synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
@@ -288,16 +232,6 @@
       <RQSFiles/>
     </Run>
     <Run Id="tr_bram_synth_1" Type="Ft3:Synth" SrcSet="tr_bram" Part="xc7a200tfbg676-2" ConstrsSet="tr_bram" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/tr_bram_synth_1" IncludeInArchive="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/tr_bram_synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2020"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="mod_bram_synth_1" Type="Ft3:Synth" SrcSet="mod_bram" Part="xc7a200tfbg676-2" ConstrsSet="mod_bram" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/mod_bram_synth_1" IncludeInArchive="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/mod_bram_synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
         <Step Id="synth_design"/>
@@ -322,8 +256,8 @@
         <StratHandle Name="Flow_PerfOptimized_high" Flow="Vivado Synthesis 2020"/>
         <Step Id="synth_design">
           <Option Id="ResourceSharing">2</Option>
-          <Option Id="ShregMinSize">5</Option>
           <Option Id="Directive">7</Option>
+          <Option Id="ShregMinSize">5</Option>
           <Option Id="NoCombineLuts">1</Option>
           <Option Id="KeepEquivalentRegisters">1</Option>
           <Option Id="FsmExtraction">1</Option>
@@ -335,23 +269,6 @@
       <RQSFiles/>
     </Run>
     <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7a200tfbg676-2" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="synth_1" IncludeInArchive="true" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2020"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2020"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="lpf_40k_500_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tfbg676-2" ConstrsSet="lpf_40k_500" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="lpf_40k_500_synth_1" IncludeInArchive="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/lpf_40k_500_impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2020"/>
         <Step Id="init_design"/>
@@ -386,23 +303,6 @@
       <RQSFiles/>
     </Run>
     <Run Id="tr_bram_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tfbg676-2" ConstrsSet="tr_bram" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="tr_bram_synth_1" IncludeInArchive="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/tr_bram_impl_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2020"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2020"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="mod_bram_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tfbg676-2" ConstrsSet="mod_bram" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="mod_bram_synth_1" IncludeInArchive="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/mod_bram_impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2020"/>
         <Step Id="init_design"/>
