@@ -3,7 +3,7 @@
 // Created Date: 24/08/2019
 // Author: Shun Suzuki
 // -----
-// Last Modified: 14/04/2021
+// Last Modified: 26/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2019-2020 Hapis Lab. All rights reserved.
@@ -25,7 +25,7 @@ namespace autd::autdsoem {
 
 struct EcConfig {
   uint32_t ec_sm3_cycle_time_ns;
-  uint32_t ec_sync0_cycle_time_ns;
+  std::vector<uint16_t> freq_cycles;
   size_t header_size;
   size_t body_size;
   size_t input_frame_size;
@@ -50,12 +50,13 @@ class SOEMController {
 
  private:
   void CreateSendThread(size_t header_size, size_t body_size);
-  void SetupSync0(bool activate, uint32_t cycle_time_ns) const;
+  void SetupSync0(bool activate,
+                  const std::vector<uint16_t>& freq_cycles) const;
 
   uint8_t* _io_map;
   size_t _io_map_size = 0;
   size_t _output_frame_size = 0;
-  uint32_t _sync0_cyc_time = 0;
+  std::vector<uint16_t> _freq_cycles;
   size_t _dev_num = 0;
   EcConfig _config;
   bool _is_open = false;

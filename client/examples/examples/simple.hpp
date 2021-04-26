@@ -11,8 +11,6 @@
 
 #pragma once
 
-#include <algorithm>
-#include <numeric>
 #include <utility>
 
 #include "autd3.hpp"
@@ -56,45 +54,8 @@ class FocalPointGain final : public autd::Gain {
   uint8_t _duty = 0xff;
 };
 
-class SineModulation final : public autd::Modulation {
- public:
-  static autd::ModulationPtr Create(int32_t freq, float amp = 1.0, float offset = 0.5) { return std::make_shared<SineModulation>(freq, amp, offset); }
-
-  autd::Result<bool, std::string> Build() override {
-    const auto sf = autd::MOD_SAMPLING_FREQUENCY;
-    const auto mod_buf_size = autd::MOD_BUF_SIZE_FPGA;
-
-    const auto freq = std::clamp(this->_freq, 1, sf / 2);
-
-    const auto d = std::gcd(sf, freq);
-    const size_t n = mod_buf_size / d / (mod_buf_size / sf);
-    const size_t rep = freq / d;
-
-    this->buffer().resize(n, 0x00);
-    for (size_t i = 0; i < n; i++) {
-      auto tamp = std::fmod(static_cast<float>(2 * rep * i) / static_cast<float>(n), 2.0f);
-      tamp = tamp > 1 ? 2 - tamp : tamp;
-      tamp = std::clamp(this->_offset + (tamp - 0.5f) * this->_amp, 0.0f, 1.0f);
-      this->buffer().at(i) = static_cast<uint8_t>(tamp * 255);
-    }
-
-    return autd::Ok(true);
-  }
-
-  explicit SineModulation(const int freq, const float amp, const float offset) : Modulation(), _freq(freq), _amp(amp), _offset(offset) {}
-
- private:
-  int32_t _freq = 0;
-  float _amp = 1.0;
-  float _offset = 0.5;
-};
-
 inline void simple_test(autd::ControllerPtr& cnt) {
-  cnt->silent_mode() = true;
-
-  const auto m = SineModulation::Create(150);
-
   const auto center = Vector3(TRANS_SIZE_MM * ((NUM_TRANS_X - 1) / 2.0f), TRANS_SIZE_MM * ((NUM_TRANS_Y - 1) / 2.0f), 150.0f);
   const auto g = FocalPointGain::Create(center);
-  cnt->Send(g, m).unwrap();
+  cnt->Send(g).unwrap();
 }

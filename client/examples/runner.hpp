@@ -34,7 +34,6 @@ inline int run(autd::ControllerPtr cnt) {
   vector<pair<f, string>> examples = {pair(f{simple_test}, "Single Focal Point Test")};
 
   cnt->Clear().unwrap();
-  cnt->Synchronize().unwrap();
 
   auto firm_info_list = cnt->firmware_info_list().unwrap();
   for (auto&& firm_info : firm_info_list) cout << firm_info << endl;

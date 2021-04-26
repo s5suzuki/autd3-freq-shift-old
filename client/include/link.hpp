@@ -3,7 +3,7 @@
 // Created Date: 14/04/2021
 // Author: Shun Suzuki
 // -----
-// Last Modified: 21/04/2021
+// Last Modified: 26/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -13,10 +13,17 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "result.hpp"
 
 namespace autd {
+
+class LinkConfiguration {
+ public:
+  std::vector<uint16_t> freq_cycles;
+};
+
 /**
  * @brief Link is the interface to the AUTD device
  */
@@ -33,7 +40,7 @@ class Link {
    * @brief Open link
    * @return return Ok(whether succeeded to open), or Err(error msg) if some unrecoverable error occurred
    */
-  [[nodiscard]] virtual Result<bool, std::string> Open() = 0;
+  [[nodiscard]] virtual Result<bool, std::string> Open(LinkConfiguration config) = 0;
 
   /**
    * @brief Close link

@@ -3,7 +3,7 @@
 // Created Date: 14/04/2021
 // Author: Shun Suzuki
 // -----
-// Last Modified: 16/04/2021
+// Last Modified: 26/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -20,12 +20,12 @@
 #include <utility>
 #include <vector>
 
+#include "consts.hpp"
 #include "device.hpp"
 #include "ec_config.hpp"
 #include "firmware_version.hpp"
 #include "gain.hpp"
 #include "link.hpp"
-#include "modulation.hpp"
 
 using std::unique_ptr;
 
@@ -40,20 +40,23 @@ constexpr uint8_t CMD_READ_CPU_VER_MSB = 0x03;
 constexpr uint8_t CMD_READ_FPGA_VER_LSB = 0x04;
 constexpr uint8_t CMD_READ_FPGA_VER_MSB = 0x05;
 constexpr uint8_t CMD_CLEAR = 0x09;
-constexpr uint8_t CMD_SYNCHRONIZE = 0x0A;
 
 class Controller {
  public:
   static ControllerPtr Create() { return std::make_unique<Controller>(); }
 
-  Controller() : _tx_capacity(0), _tx_data(nullptr), _rx_capacity(0), _rx_data(nullptr), _link(nullptr), _devices(), _silent_mode(true) {}
+  Controller() : _tx_capacity(0), _tx_data(nullptr), _rx_capacity(0), _rx_data(nullptr), _link(nullptr), _devices(), _freq_cycles() {}
 
-  [[nodiscard]] std::vector<Device>& devices() { return this->_devices; }
-  [[nodiscard]] bool& silent_mode() { return this->_silent_mode; }
+  void AddDevices(Device device, uint16_t freq_cycle = FPGA_BASE_CLK_FREQ / 40000) {
+    this->_devices.emplace_back(std::move(device));
+    this->_freq_cycles.emplace_back(freq_cycle);
+  }
+
+  [[nodiscard]] size_t num_devices() { return this->_devices.size(); }
 
   [[nodiscard]] Result<bool, std::string> OpenWith(LinkPtr link) {
     this->_link = std::move(link);
-    return this->_link->Open();
+    return this->_link->Open(LinkConfiguration{_freq_cycles});
   }
 
   [[nodiscard]] Result<bool, std::string> Close() {
@@ -63,11 +66,9 @@ class Controller {
 
   Result<bool, std::string> Clear() { return SendHeaderBlocking(CMD_CLEAR, 200); }
 
-  Result<bool, std::string> Synchronize() { return SendHeaderBlocking(CMD_SYNCHRONIZE, 5000); }
-
   Result<bool, std::string> Stop() { return SendBlocking(NullGain::Create()); }
 
-  Result<bool, std::string> SendBlocking(GainPtr gain, ModulationPtr mod) {
+  Result<bool, std::string> SendBlocking(GainPtr gain) {
     size_t size;
 
     if (gain != nullptr) {
@@ -75,20 +76,11 @@ class Controller {
       if (res.is_err()) return res;
     }
 
-    if (mod != nullptr) {
-      auto res = mod->Build();
-      if (res.is_err()) return res;
-    }
-
-    this->PackBody(gain, mod, &size);
+    this->PackBody(gain, &size);
     return this->SendBlocking(size, 200);
   }
 
-  Result<bool, std::string> SendBlocking(GainPtr gain) { return SendBlocking(gain, nullptr); }
-
-  Result<bool, std::string> SendBlocking(ModulationPtr mod) { return SendBlocking(nullptr, mod); }
-
-  Result<bool, std::string> Send(GainPtr gain, ModulationPtr mod) {
+  Result<bool, std::string> Send(GainPtr gain) {
     size_t size;
 
     if (gain != nullptr) {
@@ -96,18 +88,9 @@ class Controller {
       if (res.is_err()) return res;
     }
 
-    if (mod != nullptr) {
-      auto res = mod->Build();
-      if (res.is_err()) return res;
-    }
-
-    this->PackBody(gain, mod, &size);
+    this->PackBody(gain, &size);
     return this->SendData(size);
   }
-
-  Result<bool, std::string> Send(GainPtr gain) { return Send(gain, nullptr); }
-
-  Result<bool, std::string> Send(ModulationPtr mod) { return Send(nullptr, mod); }
 
   [[nodiscard]] Result<std::vector<FirmwareInfo>, std::string> firmware_info_list() {
     const auto size = _devices.size();
@@ -195,7 +178,7 @@ class Controller {
     return Ok(false);
   }
 
-  void PackBody(const GainPtr& gain, const ModulationPtr& mod, size_t* size) {
+  void PackBody(const GainPtr& gain, size_t* size) {
     *size = sizeof(RxGlobalHeader);
     if (gain != nullptr) *size += sizeof(uint16_t) * NUM_TRANS_IN_UNIT * this->_devices.size();
 
@@ -204,20 +187,7 @@ class Controller {
     auto* header = reinterpret_cast<RxGlobalHeader*>(&_tx_data[0]);
     header->msg_id = get_id();
     header->control_flags = RX_GLOBAL_CONTROL_FLAGS::NONE;
-    header->mod_size = 0;
     header->cmd = CMD_OP;
-
-    if (this->_silent_mode) header->control_flags |= RX_GLOBAL_CONTROL_FLAGS::SILENT;
-
-    if (mod != nullptr) {
-      const auto mod_size = static_cast<uint8_t>(std::clamp(mod->buffer().size() - mod->sent(), size_t{0}, MOD_FRAME_SIZE));
-      header->mod_size = mod_size;
-      if (mod->sent() == 0) header->control_flags |= RX_GLOBAL_CONTROL_FLAGS::MOD_BEGIN;
-      if (mod->sent() + mod_size >= mod->buffer().size()) header->control_flags |= RX_GLOBAL_CONTROL_FLAGS::MOD_END;
-
-      std::memcpy(header->mod, &mod->buffer()[mod->sent()], mod_size);
-      mod->sent() += mod_size;
-    }
 
     auto* cursor = &_tx_data[0] + sizeof(RxGlobalHeader);
     const auto byte_size = NUM_TRANS_IN_UNIT * sizeof(uint16_t);
@@ -266,7 +236,6 @@ class Controller {
 
   LinkPtr _link;
   std::vector<Device> _devices;
-
-  bool _silent_mode;
+  std::vector<uint16_t> _freq_cycles;
 };
 }  // namespace autd

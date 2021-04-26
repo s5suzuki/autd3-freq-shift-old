@@ -3,7 +3,7 @@
 // Created Date: 14/04/2021
 // Author: Shun Suzuki
 // -----
-// Last Modified: 21/04/2021
+// Last Modified: 26/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -32,9 +32,8 @@ constexpr auto IsMissingTransducer(T x, T y) {
   return y == 1 && (x == 1 || x == 2 || x == 16);
 }
 
-constexpr auto ULTRASOUND_FREQUENCY = 40000;
-constexpr auto MOD_BUF_SIZE_FPGA = 4000;
-constexpr auto MOD_SAMPLING_FREQUENCY = 4000;
+constexpr uint32_t FPGA_BASE_CLK_FREQ = 50000000;
+constexpr uint32_t FPGA_BASE_CLK_PERIOD_NS = 1000000000 / FPGA_BASE_CLK_FREQ;
 
 using AUTDDataArray = std::array<uint16_t, NUM_TRANS_IN_UNIT>;
 }  // namespace autd

@@ -3,7 +3,7 @@
 // Created Date: 24/08/2019
 // Author: Shun Suzuki
 // -----
-// Last Modified: 21/04/2021
+// Last Modified: 26/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2019-2020 Hapis Lab. All rights reserved.
@@ -47,7 +47,7 @@ class SOEMLink : virtual public Link {
   SOEMLink(SOEMLink&& obj) = delete;
   SOEMLink& operator=(SOEMLink&& obj) = delete;
 
-  Result<bool, std::string> Open() override = 0;
+  Result<bool, std::string> Open(LinkConfiguration config) override = 0;
   Result<bool, std::string> Close() override = 0;
   Result<bool, std::string> Send(size_t size, const uint8_t* buf) override = 0;
   Result<bool, std::string> Read(uint8_t* rx, size_t buffer_len) override = 0;

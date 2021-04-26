@@ -3,7 +3,7 @@
 // Created Date: 26/12/2020
 // Author: Shun Suzuki
 // -----
-// Last Modified: 16/04/2021
+// Last Modified: 26/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -21,10 +21,10 @@ using Float = float;
 
 enum class RX_GLOBAL_CONTROL_FLAGS : uint8_t {
   NONE = 0,
-  MOD_BEGIN = 1 << 0,
-  MOD_END = 1 << 1,
   //
-  SILENT = 1 << 3,
+  //
+  //
+  //
   FORCE_FAN = 1 << 4,
 };
 
@@ -38,13 +38,12 @@ constexpr RX_GLOBAL_CONTROL_FLAGS& operator|=(RX_GLOBAL_CONTROL_FLAGS& l, RX_GLO
   return l;
 }
 
-constexpr size_t MOD_FRAME_SIZE = 124;
+constexpr size_t FRAME_PADDING_SIZE = 125;
 
 struct RxGlobalHeader {
   uint8_t msg_id;
   RX_GLOBAL_CONTROL_FLAGS control_flags;
   uint8_t cmd;
-  uint8_t mod_size;
-  uint8_t mod[MOD_FRAME_SIZE];
+  uint8_t _pad[FRAME_PADDING_SIZE];
 };
 }  // namespace autd

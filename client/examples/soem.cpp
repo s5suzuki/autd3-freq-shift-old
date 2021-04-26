@@ -37,13 +37,13 @@ int main() {
   try {
     auto cnt = autd::Controller::Create();
 
-    cnt->devices().emplace_back(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)));
-    cnt->devices().emplace_back(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)));
+    cnt->AddDevices(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1250);
+    cnt->AddDevices(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 2500);
 
     // If you have already recognized the EtherCAT adapter name, you can write it directly like below.
     // auto ifname = "\\Device\\NPF_{B5B631C6-ED16-4780-9C4C-3941AE8120A6}";
     const auto ifname = get_adapter_name();
-    auto link = autd::link::SOEMLink::Create(ifname, cnt->devices().size());
+    auto link = autd::link::SOEMLink::Create(ifname, cnt->num_devices());
     auto res = cnt->OpenWith(std::move(link));
 
     if (res.is_err()) {
