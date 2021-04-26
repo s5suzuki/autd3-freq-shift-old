@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(autd3-lite)
-set(VERSION_MAJOR   1   CACHE STRING "Project major version number.")
-set(VERSION_MINOR   0   CACHE STRING "Project minor version number.")
+project(autd3-freq-shift)
+set(VERSION_MAJOR   0   CACHE STRING "Project major version number.")
+set(VERSION_MINOR   1   CACHE STRING "Project minor version number.")
 set(VERSION_PATCH   0   CACHE STRING "Project patch version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
@@ -70,10 +70,6 @@ if(Git_FOUND)
 endif()
 set(SOEM_PATH ${PROJECT_SOURCE_DIR}/deps/SOEM/SOEM)
 add_subdirectory(link/soem)
-
-if(WIN32)
-  add_subdirectory(link/twincat)
-endif()
 
 if(BUILD_DOC)
   add_subdirectory(doc)
