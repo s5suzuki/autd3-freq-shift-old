@@ -4,7 +4,7 @@
  * Created Date: 29/06/2020
  * Author: Shun Suzuki
  * -----
- * Last Modified: 21/04/2021
+ * Last Modified: 26/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -16,40 +16,32 @@
 #include "iodefine.h"
 #include "utils.h"
 
-#define CPU_VERSION (0x1000)  // v1.0-lite
+#define CPU_VERSION (0xF000)  // v0.1-alpha-freq-shift
 
-#define MICRO_SECONDS (1000)
-
-#define MOD_BUF_SIZE (4000)
-#define MOD_FRAME_SIZE (124)
+#define PADDING_SIZE (125)
 
 #define BRAM_TR_SELECT (0x00)
-#define BRAM_MOD_SELECT (0x01)
 #define BRAM_CONFIG_SELECT (0x0F)
 
-#define CTRL_FLAGS_ADDR (0)
-#define FPGA_INFO_ADDR (1)
-#define CLK_SYNC_ADDR (2)
-#define FPGA_VER_ADDR (255)
+#define CTRL_FLAGS_ADDR (0x00)
+#define FPGA_INFO_ADDR (0x01)
+#define CYCLE_CNT (0x10)
+#define FPGA_VER_ADDR (0xFF)
 
-#define CMD_OP (0x00)
 #define CMD_RD_CPU_V_LSB (0x02)
 #define CMD_RD_CPU_V_MSB (0x03)
 #define CMD_RD_FPGA_V_LSB (0x04)
 #define CMD_RD_FPGA_V_MSB (0x05)
 #define CMD_CLEAR (0x09)
-#define CMD_SYNCHRONIZE (0x0A)
+#define CMD_ULTRASOUND_CYCLE_CNT (0x0B)
+#define CMD_WRITE_DUTY (0x10)
+#define CMD_WRITE_PHASE (0x11)
 
 extern RX_STR0 _sRx0;
 extern RX_STR1 _sRx1;
 extern TX_STR _sTx;
 
 static volatile uint8_t _header_id = 0;
-static volatile uint8_t _ctrl_flag = 0;
-static volatile uint8_t _cmd = 0;
-
-static volatile uint8_t _mod_buf[MOD_BUF_SIZE];
-static volatile uint16_t _mod_size = 0;
 
 // fire when ethercat packet arrives
 extern void recv_ethercat(void);
@@ -59,10 +51,10 @@ extern void init_app(void);
 extern void update(void);
 
 typedef enum {
-  MOD_BEGIN = 1 << 0,
-  MOD_END = 1 << 1,
   //
-  SILENT = 1 << 3,
+  //
+  //
+  //
   FORCE_FAN = 1 << 4,
 } RxGlobalControlFlags;
 
@@ -70,93 +62,71 @@ typedef struct {
   uint8_t msg_id;
   uint8_t control_flags;
   uint8_t cmd;
-  uint8_t mod_size;
-  uint8_t mod[MOD_FRAME_SIZE];
+  uint8_t _pad[PADDING_SIZE];
 } RxGlobalHeader;
 
-static void write_mod_buf() {
+static void write_duty(volatile uint16_t *src, uint32_t size) {
   volatile uint16_t *base = (volatile uint16_t *)FPGA_BASE;
-  uint16_t addr = get_addr(BRAM_MOD_SELECT, 0);
-  word_cpy_volatile(&base[addr], (volatile uint16_t *)_mod_buf, MOD_BUF_SIZE >> 1);
+  uint32_t i;
+  uint16_t base_addr;
+
+  base_addr = get_addr(BRAM_TR_SELECT, 0);
+  for (i = 0; i < TRANS_NUM; i++) {
+    base[base_addr + (i << 1) + 1] = src[i];
+  }
+}
+
+static void write_phase(volatile uint16_t *src, uint32_t size) {
+  volatile uint16_t *base = (volatile uint16_t *)FPGA_BASE;
+  uint32_t i;
+  uint16_t base_addr;
+
+  base_addr = get_addr(BRAM_TR_SELECT, 0);
+  for (i = 0; i < TRANS_NUM; i++) {
+    base[base_addr + (i << 1)] = src[i];
+  }
 }
 
 static void clear(void) {
   volatile uint16_t *base = (volatile uint16_t *)FPGA_BASE;
   uint16_t addr;
 
-  memset_volatile(_mod_buf, 0xff, MOD_BUF_SIZE);
-  write_mod_buf(MOD_BUF_SIZE);
-
   addr = get_addr(BRAM_TR_SELECT, 0);
-  word_set_volatile(&base[addr], 0x0000, TRANS_NUM);
+  word_set_volatile(&base[addr], 0x0000, TRANS_NUM << 1);
 
-  bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, SILENT);
-  bram_write(BRAM_CONFIG_SELECT, CLK_SYNC_ADDR, 0);
+  bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, 0);
+  bram_write(BRAM_CONFIG_SELECT, CYCLE_CNT, 0);
 }
 
 void init_app(void) { clear(); }
-
-static void sync_fpga_mod_clk(void) {
-  volatile uint32_t sys_time;
-  volatile uint64_t next_sync0 = ECATC.DC_CYC_START_TIME.LONGLONG;
-
-  // wait for sync0 activation
-  while (ECATC.DC_SYS_TIME.LONGLONG < next_sync0) {
-    wait_ns(1000 * MICRO_SECONDS);
-  }
-
-  sys_time = mod1e9_u64(ECATC.DC_SYS_TIME.LONGLONG);
-  while (sys_time > 50 * MICRO_SECONDS) {
-    sys_time = mod1e9_u64(ECATC.DC_SYS_TIME.LONGLONG);
-  }
-  bram_write(BRAM_CONFIG_SELECT, CLK_SYNC_ADDR, 1);
-  asm volatile("isb");
-}
 
 static uint16_t get_cpu_version(void) { return CPU_VERSION; }
 
 static uint16_t get_fpga_version(void) { return bram_read(BRAM_CONFIG_SELECT, FPGA_VER_ADDR); }
 
-void update(void) {
-  if (_cmd == CMD_SYNCHRONIZE) {
-    _cmd = 0x00;
-    sync_fpga_mod_clk();
-    _sTx.ack = ((uint16_t)_header_id) << 8;
-  }
-}
+void update(void) {}
 
 void recv_ethercat(void) {
-  volatile uint16_t *base = (volatile uint16_t *)FPGA_BASE;
   RxGlobalHeader *header = (RxGlobalHeader *)(_sRx1.data);
-  uint16_t mod_write;
-  uint16_t addr;
-  uint32_t i;
 
   if (header->msg_id != _header_id) {
-    _ctrl_flag = header->control_flags;
     _header_id = header->msg_id;
-    _cmd = header->cmd;
 
     switch (header->cmd) {
-      case CMD_OP:
-        bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, _ctrl_flag);
-        addr = get_addr(BRAM_TR_SELECT, 0);
-        word_cpy_volatile(&base[addr], _sRx0.data, TRANS_NUM);
+      case CMD_WRITE_DUTY:
+        bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, header->control_flags);
+        write_duty(_sRx0.data, TRANS_NUM);
+        _sTx.ack = ((uint16_t)(header->msg_id)) << 8;
+        break;
 
-        if ((header->control_flags & MOD_BEGIN) != 0) {
-          _mod_size = 0;
-        }
+      case CMD_WRITE_PHASE:
+        bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, header->control_flags);
+        write_phase(_sRx0.data, TRANS_NUM);
+        _sTx.ack = ((uint16_t)(header->msg_id)) << 8;
+        break;
 
-        memcpy_volatile(&_mod_buf[_mod_size], header->mod, header->mod_size);
-        _mod_size += header->mod_size;
-
-        if ((header->control_flags & MOD_END) != 0) {
-          for (i = _mod_size; i < MOD_BUF_SIZE; i += _mod_size) {
-            mod_write = (i + _mod_size) > MOD_BUF_SIZE ? MOD_BUF_SIZE - i : _mod_size;
-            memcpy_volatile(&_mod_buf[i], &_mod_buf[0], mod_write);
-          }
-          write_mod_buf();
-        }
+      case CMD_ULTRASOUND_CYCLE_CNT:
+        bram_write(BRAM_CONFIG_SELECT, CYCLE_CNT, _sRx0.data[0]);
         _sTx.ack = ((uint16_t)(header->msg_id)) << 8;
         break;
 
