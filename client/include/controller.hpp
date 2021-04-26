@@ -34,12 +34,14 @@ namespace autd {
 class Controller;
 using ControllerPtr = unique_ptr<Controller>;
 
-constexpr uint8_t CMD_OP = 0x00;
 constexpr uint8_t CMD_READ_CPU_VER_LSB = 0x02;
 constexpr uint8_t CMD_READ_CPU_VER_MSB = 0x03;
 constexpr uint8_t CMD_READ_FPGA_VER_LSB = 0x04;
 constexpr uint8_t CMD_READ_FPGA_VER_MSB = 0x05;
 constexpr uint8_t CMD_CLEAR = 0x09;
+constexpr uint8_t CMD_ULTRASOUND_CYCLE_CNT = 0x0B;
+constexpr uint8_t CMD_WRITE_DUTY = 0x10;
+constexpr uint8_t CMD_WRITE_PHASE = 0x10;
 
 class Controller {
  public:
@@ -51,6 +53,9 @@ class Controller {
     this->_devices.emplace_back(std::move(device));
     this->_freq_cycles.emplace_back(freq_cycle);
   }
+
+  std::vector<Device>& devices() { return this->_devices; }
+  std::vector<uint16_t>& freq_cycles() { return this->_freq_cycles; }
 
   [[nodiscard]] size_t num_devices() { return this->_devices.size(); }
 
@@ -68,28 +73,26 @@ class Controller {
 
   Result<bool, std::string> Stop() { return SendBlocking(NullGain::Create()); }
 
+  Result<bool, std::string> SetFreqCycles() {
+    size_t size;
+    this->SetUltrasoundFreq(&size);
+    return this->SendBlocking(size, 200);
+  }
+
   Result<bool, std::string> SendBlocking(GainPtr gain) {
     size_t size;
 
     if (gain != nullptr) {
-      auto res = gain->Build(this->_devices);
+      auto res = gain->Build(this->_devices, this->_freq_cycles);
       if (res.is_err()) return res;
     }
 
-    this->PackBody(gain, &size);
+    this->PackDutyBody(gain, &size);
+    auto res = this->SendBlocking(size, 200);
+    if (res.is_err()) return res;
+
+    this->PackPhaseBody(gain, &size);
     return this->SendBlocking(size, 200);
-  }
-
-  Result<bool, std::string> Send(GainPtr gain) {
-    size_t size;
-
-    if (gain != nullptr) {
-      auto res = gain->Build(this->_devices);
-      if (res.is_err()) return res;
-    }
-
-    this->PackBody(gain, &size);
-    return this->SendData(size);
   }
 
   [[nodiscard]] Result<std::vector<FirmwareInfo>, std::string> firmware_info_list() {
@@ -122,6 +125,24 @@ class Controller {
   }
 
  private:
+  void SetUltrasoundFreq(size_t* size) {
+    *size = sizeof(RxGlobalHeader) + sizeof(uint16_t) * NUM_TRANS_IN_UNIT * this->_devices.size();
+
+    reserve_tx();
+
+    auto* header = reinterpret_cast<RxGlobalHeader*>(&_tx_data[0]);
+    header->msg_id = get_id();
+    header->control_flags = RX_GLOBAL_CONTROL_FLAGS::NONE;
+    header->cmd = CMD_ULTRASOUND_CYCLE_CNT;
+
+    auto* cursor = &_tx_data[0] + sizeof(RxGlobalHeader);
+    const auto byte_size = NUM_TRANS_IN_UNIT * sizeof(uint16_t);
+    for (size_t i = 0; i < _devices.size(); i++) {
+      std::memcpy(cursor, &this->_freq_cycles[i], sizeof(uint16_t));
+      cursor += byte_size;
+    }
+  }
+
   Result<bool, std::string> SendHeaderBlocking(const uint8_t cmd, const size_t trial) {
     const auto size = sizeof(RxGlobalHeader);
 
@@ -178,7 +199,7 @@ class Controller {
     return Ok(false);
   }
 
-  void PackBody(const GainPtr& gain, size_t* size) {
+  void PackDutyBody(const GainPtr& gain, size_t* size) {
     *size = sizeof(RxGlobalHeader);
     if (gain != nullptr) *size += sizeof(uint16_t) * NUM_TRANS_IN_UNIT * this->_devices.size();
 
@@ -187,13 +208,34 @@ class Controller {
     auto* header = reinterpret_cast<RxGlobalHeader*>(&_tx_data[0]);
     header->msg_id = get_id();
     header->control_flags = RX_GLOBAL_CONTROL_FLAGS::NONE;
-    header->cmd = CMD_OP;
+    header->cmd = CMD_WRITE_DUTY;
 
     auto* cursor = &_tx_data[0] + sizeof(RxGlobalHeader);
     const auto byte_size = NUM_TRANS_IN_UNIT * sizeof(uint16_t);
     if (gain != nullptr) {
       for (size_t i = 0; i < _devices.size(); i++) {
-        std::memcpy(cursor, &gain->data()[i].at(0), byte_size);
+        std::memcpy(cursor, &gain->duty()[i].at(0), byte_size);
+        cursor += byte_size;
+      }
+    }
+  }
+
+  void PackPhaseBody(const GainPtr& gain, size_t* size) {
+    *size = sizeof(RxGlobalHeader);
+    if (gain != nullptr) *size += sizeof(uint16_t) * NUM_TRANS_IN_UNIT * this->_devices.size();
+
+    reserve_tx();
+
+    auto* header = reinterpret_cast<RxGlobalHeader*>(&_tx_data[0]);
+    header->msg_id = get_id();
+    header->control_flags = RX_GLOBAL_CONTROL_FLAGS::NONE;
+    header->cmd = CMD_WRITE_PHASE;
+
+    auto* cursor = &_tx_data[0] + sizeof(RxGlobalHeader);
+    const auto byte_size = NUM_TRANS_IN_UNIT * sizeof(uint16_t);
+    if (gain != nullptr) {
+      for (size_t i = 0; i < _devices.size(); i++) {
+        std::memcpy(cursor, &gain->phase()[i].at(0), byte_size);
         cursor += byte_size;
       }
     }

@@ -3,7 +3,7 @@
 // Created Date: 19/05/2020
 // Author: Shun Suzuki
 // -----
-// Last Modified: 21/04/2021
+// Last Modified: 26/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -37,8 +37,9 @@ int main() {
   try {
     auto cnt = autd::Controller::Create();
 
-    cnt->AddDevices(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1250);
-    cnt->AddDevices(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 2500);
+    // FPGA base clk frequency is 50MHz
+    cnt->AddDevices(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1250);  // 50MHz/1250 = 40kHz
+    cnt->AddDevices(autd::Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 2500);  // 50MHz/1250 = 20kHz
 
     // If you have already recognized the EtherCAT adapter name, you can write it directly like below.
     // auto ifname = "\\Device\\NPF_{B5B631C6-ED16-4780-9C4C-3941AE8120A6}";
