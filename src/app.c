@@ -14,7 +14,6 @@
 #include "app.h"
 
 #include "iodefine.h"
-#include "utils.h"
 
 #define CPU_VERSION (0xF000)  // v0.1-alpha-freq-shift
 
@@ -71,7 +70,7 @@ static void write_duty(volatile uint16_t *src, uint32_t size) {
   uint16_t base_addr;
 
   base_addr = get_addr(BRAM_TR_SELECT, 0);
-  for (i = 0; i < TRANS_NUM; i++) {
+  for (i = 0; i < size; i++) {
     base[base_addr + (i << 1) + 1] = src[i];
   }
 }
@@ -82,7 +81,7 @@ static void write_phase(volatile uint16_t *src, uint32_t size) {
   uint16_t base_addr;
 
   base_addr = get_addr(BRAM_TR_SELECT, 0);
-  for (i = 0; i < TRANS_NUM; i++) {
+  for (i = 0; i < size; i++) {
     base[base_addr + (i << 1)] = src[i];
   }
 }
