@@ -38,7 +38,6 @@ class FocalPointGain final : public Gain {
         const auto phase = static_cast<uint16_t>(std::round(static_cast<float>(freq_cycle[dev_idx]) * (1 - f_phase)));
         this->_duties[dev_idx][i] = duty;
         this->_phases[dev_idx][i] = phase;
-        std::cout << duty << ", " << phase << std::endl;
       }
     }
 
@@ -74,7 +73,7 @@ int main() {
 
     // FPGA base clk frequency is 50MHz
     cnt->AddDevices(Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1250);  // 50MHz/1250 = 40kHz
-    // cnt->AddDevices(Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1200);  // 50MHz/1200 = 41.667kHz
+    cnt->AddDevices(Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1200);  // 50MHz/1200 = 41.667kHz
 
     const auto ifname = get_adapter_name();
     auto link = link::SOEMLink::Create(ifname, cnt->num_devices());

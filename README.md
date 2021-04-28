@@ -1,12 +1,12 @@
-# AUTD3-Lite
+# AUTD3-freq-shift
 
-Lightweight version of [AUTD3 library](https://github.com/shinolab/autd3-library-software).
+This software is for changing the ultrasound frequency.
 
-Version: 1.0.0-lite
+Version: 0.1.0-alpha
 
-* The firmware codes are available at [here](https://github.com/shinolab/autd3-lite-firmware).
+* The firmware codes are available at [here](https://github.com/shinolab/autd3-freq-shift-firmware).
 
-## :books: [API document](https://shinolab.github.io/autd3-lite-software/index.html)
+## :books: [API document](https://shinolab.github.io/autd3-freq-shift-software/index.html)
 
 ## :memo: Versioning
 
@@ -24,8 +24,6 @@ If the number of x changes, the firmware of FPGA or CPU must be upgraded.
 ## :ballot_box_with_check: Requirements
 
 * If you use `SOEMLink` on Windows, install [Npcap](https://nmap.org/npcap/) with WinPcap API-compatible mode (recommended) or [WinPcap](https://www.winpcap.org/).
-
-* If you use `TwinCAT`, please see [how to install AUTDServer](https://github.com/shinolab/autd3-library-software/wiki/How-to-install-AUTDServer).
 
 ## :beginner: Example
 

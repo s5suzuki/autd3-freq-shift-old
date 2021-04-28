@@ -2,7 +2,7 @@
 
 ## Windows
 
-run `build.ps1` or run CMake, then open `autd3-lite.sln` in `BUILD_DIR` (default `./build`)
+run `build.ps1` or run CMake, then open `autd3-freq-shift.sln` in `BUILD_DIR` (default `./build`)
 
 ### build.ps1 options
 
