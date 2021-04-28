@@ -3,7 +3,7 @@
 // Created Date: 14/04/2021
 // Author: Shun Suzuki
 // -----
-// Last Modified: 26/04/2021
+// Last Modified: 28/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -41,7 +41,7 @@ constexpr uint8_t CMD_READ_FPGA_VER_MSB = 0x05;
 constexpr uint8_t CMD_CLEAR = 0x09;
 constexpr uint8_t CMD_ULTRASOUND_CYCLE_CNT = 0x0B;
 constexpr uint8_t CMD_WRITE_DUTY = 0x10;
-constexpr uint8_t CMD_WRITE_PHASE = 0x10;
+constexpr uint8_t CMD_WRITE_PHASE = 0x11;
 
 class Controller {
  public:
