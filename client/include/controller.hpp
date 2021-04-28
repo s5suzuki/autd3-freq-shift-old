@@ -48,6 +48,15 @@ class Controller {
   static ControllerPtr Create() { return std::make_unique<Controller>(); }
 
   Controller() : _tx_capacity(0), _tx_data(nullptr), _rx_capacity(0), _rx_data(nullptr), _link(nullptr), _devices(), _freq_cycles() {}
+  ~Controller() {
+    if (this->_link != nullptr && this->_link->is_open()) {
+      try {
+        this->Close();
+      } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+      }
+    }
+  }
 
   void AddDevices(Device device, uint16_t freq_cycle = FPGA_BASE_CLK_FREQ / 40000) {
     this->_devices.emplace_back(std::move(device));
@@ -66,6 +75,11 @@ class Controller {
 
   [[nodiscard]] Result<bool, std::string> Close() {
     if (this->_link == nullptr || !this->_link->is_open()) return Ok(false);
+    auto res = this->Stop();
+    if (res.is_err()) return res;
+    res = this->Clear();
+    if (res.is_err()) return res;
+
     return this->_link->Close();
   }
 

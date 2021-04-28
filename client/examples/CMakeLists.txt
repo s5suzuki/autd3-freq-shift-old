@@ -2,11 +2,9 @@ cmake_minimum_required(VERSION 3.1)
 
 set (CMAKE_CXX_STANDARD 17)
 
-include_directories(${PROJECT_SOURCE_DIR}/include examples)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 find_package(Threads REQUIRED)
-
-file(GLOB hpp_files examples/*.hpp)
 
 if(WIN32)
   link_libraries(ws2_32.lib)
@@ -18,7 +16,6 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif()
  
-add_executable(example_soem soem.cpp runner.hpp ${hpp_files})
+add_executable(example_soem soem.cpp)
 target_link_libraries(example_soem link_soem)
 target_include_directories(example_soem PUBLIC ${PROJECT_SOURCE_DIR}/link/soem/include)
-

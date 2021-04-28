@@ -3,7 +3,7 @@
 // Created Date: 23/08/2019
 // Author: Shun Suzuki
 // -----
-// Last Modified: 26/04/2021
+// Last Modified: 28/04/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2019-2020 Hapis Lab. All rights reserved.
@@ -73,7 +73,7 @@ void SOEMController::SetupSync0(const bool activate, const std::vector<uint16_t>
   }
 }
 
-Result<bool, std::string> SOEMController::Open(const char* ifname, const size_t dev_num, const EcConfig config) {
+Result<bool, std::string> SOEMController::Open(const char* ifname, const size_t dev_num, const EcConfig& config) {
   _dev_num = dev_num;
   _config = config;
   _output_frame_size = (config.header_size + config.body_size) * _dev_num;
@@ -204,7 +204,7 @@ void SOEMController::CreateSendThread(size_t header_size, size_t body_size) {
   });
 }
 
-SOEMController::SOEMController() : _config() {
+SOEMController::SOEMController() {
   this->_is_open = false;
   this->_io_map = nullptr;
 }
