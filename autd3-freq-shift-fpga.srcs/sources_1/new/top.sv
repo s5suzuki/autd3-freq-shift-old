@@ -4,7 +4,7 @@
  * Created Date: 27/03/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 26/04/2021
+ * Last Modified: 28/04/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -141,8 +141,8 @@ always_ff @(posedge sys_clk) begin
         tr_bram_addr <= 0;
         tr_state <= IDLE;
         tr_cnt_write <= 0;
-        duty_buf <= '{TRANS_NUM{8'h00}};
-        phase_buf <= '{TRANS_NUM{8'h00}};
+        duty_buf <= '{TRANS_NUM{0}};
+        phase_buf <= '{TRANS_NUM{0}};
     end
     else begin
         case(tr_state)
@@ -162,8 +162,8 @@ always_ff @(posedge sys_clk) begin
                 tr_state <= DUTY_PHASE;
             end
             DUTY_PHASE: begin
-                duty_buf[tr_cnt_write] <= tr_bram_dataout[31:16];
-                phase_buf[tr_cnt_write] <= tr_bram_dataout[15:0];
+                duty_buf[tr_cnt_write] <= tr_bram_dataout[16+WIDTH-1:16];
+                phase_buf[tr_cnt_write] <= tr_bram_dataout[WIDTH-1:0];
                 if (tr_cnt_write == TRANS_NUM - 1) begin
                     tr_bram_addr <= 8'd0;
                     tr_state <= IDLE;
@@ -180,8 +180,8 @@ end
 
 always_ff @(posedge sys_clk) begin
     if (reset) begin
-        duty <= '{TRANS_NUM{15'h00}};
-        phase <= '{TRANS_NUM{15'h00}};
+        duty <= '{TRANS_NUM{0}};
+        phase <= '{TRANS_NUM{0}};
     end
     else if (time_cnt_for_ultrasound == (cycle - 1)) begin
         duty <= duty_buf;
@@ -239,7 +239,7 @@ always_ff @(posedge sys_clk) begin
             end
             CYCLE_READ: begin
                 config_bram_addr <= CYCLE_ADDR;
-                cycle <= config_bram_dout;
+                cycle <= config_bram_dout[WIDTH-1:0];
                 config_web <= 1'b0;
                 config_state <= CTRL_FLAGS_READ;
             end
@@ -252,13 +252,15 @@ end
 generate begin:TRANSDUCERS_GEN
         genvar ii;
         for(ii = 0; ii < TRANS_NUM; ii++) begin
-            pwm_generator pwm_generator(
-                              .TIME(time_cnt_for_ultrasound),
-                              .CYCLE(cycle),
-                              .DUTY(duty[ii]),
-                              .PHASE_DELAY(phase[ii]),
-                              .PWM_OUT(XDCR_OUT[cvt_uid(ii) + 1])
-                          );
+            pwm_generator#(
+                             .WIDTH(WIDTH)
+                         ) pwm_generator(
+                             .TIME(time_cnt_for_ultrasound),
+                             .CYCLE(cycle),
+                             .DUTY(duty[ii]),
+                             .PHASE_DELAY(phase[ii]),
+                             .PWM_OUT(XDCR_OUT[cvt_uid(ii) + 1])
+                         );
         end
     end
 endgenerate
@@ -277,7 +279,7 @@ always_ff @(posedge sys_clk) begin
     end
     else begin
         gpo_0 <= (sync0_edge) ? ~gpo_0 : gpo_0;
-        gpo_1 <= (time_cnt_for_ultrasound == (cycle - 1)) ? ~gpo_1 : gpo_1;
+        gpo_1 <= (time_cnt_for_ultrasound == 0) ? ~gpo_1 : gpo_1;
     end
 end
 /////////////////////////////////////// Debug //////////////////////////////////////////////
