@@ -2,7 +2,7 @@
 
 This firmware is for changing the ultrasound frequency.
 
-Version: 0.1.0-alpha
+Version: 0.2.0
 
 # :fire: CAUTION
 
@@ -45,6 +45,7 @@ Some codes has omitted because they contain proprietary parts.
 | Version number | Version |
 |----------------|---------|
 | 61440          | v0.1-alpha    |
+| 61441          | v0.2    |
 
 # Author
 

@@ -4,7 +4,7 @@
  * Created Date: 29/06/2020
  * Author: Shun Suzuki
  * -----
- * Last Modified: 26/04/2021
+ * Last Modified: 09/10/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -15,7 +15,7 @@
 
 #include "iodefine.h"
 
-#define CPU_VERSION (0xF000)  // v0.1-alpha-freq-shift
+#define CPU_VERSION (0xF001)  // v0.2-freq-shift
 
 #define PADDING_SIZE (125)
 
@@ -49,30 +49,19 @@ extern void init_app(void);
 // fire periodically with 1ms interval
 extern void update(void);
 
-typedef enum {
-  //
-  //
-  //
-  //
-  FORCE_FAN = 1 << 4,
-} RxGlobalControlFlags;
-
 typedef struct {
   uint8_t msg_id;
   uint8_t control_flags;
   uint8_t cmd;
   uint8_t _pad[PADDING_SIZE];
-} RxGlobalHeader;
+} GlobalHeader;
 
 static void write_duty(volatile uint16_t *src, uint32_t size) {
   volatile uint16_t *base = (volatile uint16_t *)FPGA_BASE;
   uint32_t i;
   uint16_t base_addr;
-
   base_addr = get_addr(BRAM_TR_SELECT, 0);
-  for (i = 0; i < size; i++) {
-    base[base_addr + (i << 1) + 1] = src[i];
-  }
+  for (i = 0; i < size; i++) base[base_addr + (i << 1) + 1] = src[i];
 }
 
 static void write_phase(volatile uint16_t *src, uint32_t size) {
@@ -81,9 +70,7 @@ static void write_phase(volatile uint16_t *src, uint32_t size) {
   uint16_t base_addr;
 
   base_addr = get_addr(BRAM_TR_SELECT, 0);
-  for (i = 0; i < size; i++) {
-    base[base_addr + (i << 1)] = src[i];
-  }
+  for (i = 0; i < size; i++) base[base_addr + (i << 1)] = src[i];
 }
 
 static void clear(void) {
@@ -100,26 +87,23 @@ static void clear(void) {
 void init_app(void) { clear(); }
 
 static uint16_t get_cpu_version(void) { return CPU_VERSION; }
-
 static uint16_t get_fpga_version(void) { return bram_read(BRAM_CONFIG_SELECT, FPGA_VER_ADDR); }
 
 void update(void) {}
 
 void recv_ethercat(void) {
-  RxGlobalHeader *header = (RxGlobalHeader *)(_sRx1.data);
+  GlobalHeader *header = (GlobalHeader *)(_sRx1.data);
 
   if (header->msg_id != _header_id) {
     _header_id = header->msg_id;
 
     switch (header->cmd) {
       case CMD_WRITE_DUTY:
-        bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, header->control_flags);
         write_duty(_sRx0.data, TRANS_NUM);
         _sTx.ack = ((uint16_t)(header->msg_id)) << 8;
         break;
 
       case CMD_WRITE_PHASE:
-        bram_write(BRAM_CONFIG_SELECT, CTRL_FLAGS_ADDR, header->control_flags);
         write_phase(_sRx0.data, TRANS_NUM);
         _sTx.ack = ((uint16_t)(header->msg_id)) << 8;
         break;
