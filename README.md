@@ -2,9 +2,9 @@
 
 This firmware is for changing the ultrasound frequency.
 
-Version: 0.1.0-alpha
+Version: 0.2.0
 
-The code is written in SystemVerilog with Vivado 2020.2.
+The code is written in SystemVerilog with Vivado 2021.1.
 
 # Connection
 
@@ -33,30 +33,31 @@ The code is written in SystemVerilog with Vivado 2020.2.
 | BRAM_SELECT | BRAM_ADDR | DATA 32 bit                           | R/W |
 |-------------|-----------|----------------------------------|-----|
 | 0x0         | 0x000    | duty[0]/phase[0]                 | R   |
-| 　          | ︙      | ︙                              | ︙   |
-| 　          | 0x0F8    | duty[248]/phase[248]                 | R   |
-| 　          | 0x0F9    | unused                           | -   |
-| 　          | ︙      | ︙                              | ︙   |
-| 　          | 0x0FF    | unused                           | -   |
+|            | ︙      | ︙                              | ︙   |
+|            | 0x0F8    | duty[248]/phase[248]                 | R   |
+|            | 0x0F9    | unused                           | -   |
+|            | ︙      | ︙                              | ︙   |
+|            | 0x0FF    | unused                           | -   |
 
 | BRAM_SELECT | BRAM_ADDR | DATA 16 bit                          | R/W |
 |-------------|-----------|----------------------------------|-----|
 | 0x2         | 0x000   | 7:0 = ctrl_flag                    | R   |
-| 　          | 0x001   | 7:0 = fpga_info            | W   |
-| 　          | 0x002   | unused                           | -  |
-| 　          | ︙        | ︙                               | ︙  |
-| 　          | 0x00E   | unused                           | -　  |
-| 　          | 0x010   | ultrasound cycle                           | R  |
-| 　          | 0x011   | unused                           | -  |
-| 　          | ︙        | ︙                               | ︙  |
-| 　          | 0x0FE   | unused                           | -　  |
-| 　          | 0x0FF   | fpga_version                    | -   |
+|            | 0x001   | 7:0 = fpga_info            | W   |
+|            | 0x002   | unused                           | -  |
+|            | ︙        | ︙                               | ︙  |
+|            | 0x00E   | unused                           | -   |
+|            | 0x010   | ultrasound cycle                           | R  |
+|            | 0x011   | unused                           | -  |
+|            | ︙        | ︙                               | ︙  |
+|            | 0x0FE   | unused                           | -   |
+|            | 0x0FF   | fpga_version                    | -   |
 
 ## Firmware version number
 
 | Version number | Version |
 |----------------|---------|
 | 61440          | v0.1-alpha    |
+| 61441          | v0.2    |
 
 # Author
 
