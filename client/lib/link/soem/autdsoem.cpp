@@ -40,7 +40,7 @@ void SOEMCallback::callback() {
 
 bool SOEMController::is_open() const { return _is_open; }
 
-void SOEMController::send(const uint8_t* buf, const size_t size) {
+void SOEMController::send(const uint8_t* buf, const size_t) {
   if (!_is_open) throw core::exception::LinkError("link is closed");
 
   while (_send_buf_size == SEND_BUF_SIZE) std::this_thread::sleep_for(std::chrono::milliseconds(this->_config.ec_sm3_cycle_time_ns / 1000 / 1000));

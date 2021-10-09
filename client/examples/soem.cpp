@@ -55,7 +55,7 @@ std::string get_adapter_name() {
 }
 
 int main() try {
-  auto cnt = autd::Controller::create();
+  const auto cnt = autd::Controller::create();
 
   // FPGA base clk frequency is 200MHz
   cnt->geometry()->add_device(autd::Vector3(0, 0, 0), autd::Vector3(0, 0, 0), 5000);  // 200MHz/5000 = 40kHz
@@ -73,7 +73,7 @@ int main() try {
   for (auto&& firm_info : firm_info_list) std::cout << firm_info << std::endl;
 
   const auto point =
-      autd::Vector3(autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_X - 1) / 2.0f), autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_Y - 1) / 2.0f), 150.0f);
+      autd::Vector3(autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_X - 1) / 2.0), autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_Y - 1) / 2.0), 150.0);
   const auto g = FocalPointGain::Create(point);
   cnt->send(g);
 
