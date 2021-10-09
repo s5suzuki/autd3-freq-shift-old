@@ -1,7 +1,7 @@
-# AUTD3 API Documents
+# AUTD3-frequency-shift API Documents
 
-Before use this library, please read [Readme](https://github.com/shinolab/autd3-library-software)
+Before use this library, please read [README](https://github.com/shinolab/autd3-freq-shift-software)
 
 # Author
 
-Shun Suzuki, 2020
+Shun Suzuki, 2021
