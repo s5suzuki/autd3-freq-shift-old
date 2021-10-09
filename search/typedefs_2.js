@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['float_362',['Float',['../namespaceautd.html#a0fd097d98e15eb4e6846d3f205acbcf7',1,'autd']]]
+  ['gainptr_279',['GainPtr',['../namespaceautd_1_1core.html#ac094edc69364df81df793c8b732474d4',1,'autd::core']]],
+  ['geometryptr_280',['GeometryPtr',['../namespaceautd_1_1core.html#a560e6b1cacfde1dc4a97b431c3009cd0',1,'autd::core']]]
 ];

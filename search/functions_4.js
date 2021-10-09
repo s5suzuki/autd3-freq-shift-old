@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['err_238',['Err',['../classautd_1_1Result.html#a60c132f900ae7c86cb16735019378b04',1,'autd::Result::Err()'],['../namespaceautd.html#ab871f8353923089ffdedb94fc82ac846',1,'autd::Err()']]],
-  ['errtype_239',['ErrType',['../structautd_1_1ErrType.html#a6e4e4c8c75169f4fb7cb4945d72c5e99',1,'autd::ErrType']]]
+  ['enumerate_5fadapters_192',['enumerate_adapters',['../classautd_1_1link_1_1SOEM.html#a45fabbf973e5e67068e8d854c7a16389',1,'autd::link::SOEM']]],
+  ['ethercatadapter_193',['EtherCATAdapter',['../structautd_1_1link_1_1EtherCATAdapter.html#aa5743f218c814044e13f3ef62b65e236',1,'autd::link::EtherCATAdapter']]]
 ];

@@ -1,0 +1,6 @@
+<map id="autd::core::Geometry::freq_cycle" name="autd::core::Geometry::freq_cycle">
+<area shape="rect" id="node1" title=" " alt="" coords="381,39,521,80"/>
+<area shape="rect" id="node2" href="$classautd_1_1core_1_1Geometry.html#aedc670bfaf122ebaaeeb76a3e5865b2d" title="Add new device with position and rotation. Note that the transform is done with order: Translate &#45;&gt; R..." alt="" coords="193,5,333,47"/>
+<area shape="rect" id="node3" href="$classautd_1_1core_1_1Geometry.html#a1c8039f9974805dc6ecc3163a545ad59" title=" " alt="" coords="193,71,333,112"/>
+<area shape="rect" id="node4" href="$classautd_1_1core_1_1Geometry.html#ad471dcb0f9d8d9486b92739bd6428174" title="ultrasound wavelength" alt="" coords="5,71,145,112"/>
+</map>

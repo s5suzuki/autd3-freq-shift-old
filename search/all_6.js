@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['firmware_5finfo_5flist_56',['firmware_info_list',['../classautd_1_1Controller.html#a3bd7289712a726a5e9fc40067d6a2b81',1,'autd::Controller']]],
-  ['firmware_5fversion_2ehpp_57',['firmware_version.hpp',['../firmware__version_8hpp.html',1,'']]],
-  ['firmwareinfo_58',['FirmwareInfo',['../classautd_1_1FirmwareInfo.html',1,'autd::FirmwareInfo'],['../classautd_1_1FirmwareInfo.html#a0371be11522a0160532a11d49ad2d7bf',1,'autd::FirmwareInfo::FirmwareInfo()']]],
-  ['float_59',['Float',['../namespaceautd.html#a0fd097d98e15eb4e6846d3f205acbcf7',1,'autd']]],
-  ['force_5ffan_60',['FORCE_FAN',['../namespaceautd.html#af86dbe2ccfe3143e7335fd8d1ec5f3c7a8901d1becf0d77c05ca98255c531b10f',1,'autd']]],
-  ['fpga_5fbase_5fclk_5ffreq_61',['FPGA_BASE_CLK_FREQ',['../namespaceautd.html#ae063feffab8fd948367a6f92f74f3b0f',1,'autd']]],
-  ['fpga_5fbase_5fclk_5fperiod_5fns_62',['FPGA_BASE_CLK_PERIOD_NS',['../namespaceautd.html#a15a179d423a251e2c5f0397c2b604936',1,'autd']]],
-  ['fpga_5fversion_63',['fpga_version',['../classautd_1_1FirmwareInfo.html#a71bcb7ac4b06c9101d5cb9873ff95925',1,'autd::FirmwareInfo']]],
-  ['frame_5fpadding_5fsize_64',['FRAME_PADDING_SIZE',['../namespaceautd.html#a2b09a1a42a63171a5f25e8b8e96a38a1',1,'autd']]],
-  ['freq_5fcycles_65',['freq_cycles',['../classautd_1_1LinkConfiguration.html#abbde198b616e98cbb32292d8f52d40a2',1,'autd::LinkConfiguration::freq_cycles()'],['../classautd_1_1Controller.html#a6efcb09ec24a67da2f3ea96de88ccc60',1,'autd::Controller::freq_cycles()']]]
+  ['firmware_5finfo_5flist_44',['firmware_info_list',['../classautd_1_1Controller.html#a849e7f81ca333c2ab447209b2f6022c4',1,'autd::Controller']]],
+  ['firmware_5fversion_2ehpp_45',['firmware_version.hpp',['../firmware__version_8hpp.html',1,'']]],
+  ['firmwareinfo_46',['FirmwareInfo',['../classautd_1_1FirmwareInfo.html',1,'autd::FirmwareInfo'],['../classautd_1_1FirmwareInfo.html#a0371be11522a0160532a11d49ad2d7bf',1,'autd::FirmwareInfo::FirmwareInfo()']]],
+  ['fpga_5fbase_5fclk_5ffreq_47',['FPGA_BASE_CLK_FREQ',['../namespaceautd_1_1core.html#ab05582dff11c7084094539895734f302',1,'autd::core']]],
+  ['fpga_5fbase_5fclk_5fperiod_5fns_48',['FPGA_BASE_CLK_PERIOD_NS',['../namespaceautd_1_1core.html#ae325af99e782372d0861c79631acd465',1,'autd::core']]],
+  ['fpga_5fversion_49',['fpga_version',['../classautd_1_1FirmwareInfo.html#a71bcb7ac4b06c9101d5cb9873ff95925',1,'autd::FirmwareInfo']]],
+  ['frame_5fpadding_5fsize_50',['FRAME_PADDING_SIZE',['../namespaceautd_1_1core.html#a52a4a7f12ac2fc21e14fe35cef3aa042',1,'autd::core']]],
+  ['freq_5fcycle_51',['freq_cycle',['../structautd_1_1core_1_1Device.html#a935f3530e89a8360f74c136f7df93c4e',1,'autd::core::Device::freq_cycle()'],['../classautd_1_1core_1_1Geometry.html#a0c7550de0ccdccd2945d445998f25150',1,'autd::core::Geometry::freq_cycle()']]],
+  ['freq_5fcycles_52',['freq_cycles',['../classautd_1_1core_1_1LinkConfiguration.html#a26bccd3fbf77440a563a8fe8f44ae6cb',1,'autd::core::LinkConfiguration']]],
+  ['frequency_53',['frequency',['../classautd_1_1core_1_1Geometry.html#a1c8039f9974805dc6ecc3163a545ad59',1,'autd::core::Geometry']]]
 ];

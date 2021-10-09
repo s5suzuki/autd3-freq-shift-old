@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['matrix4x4_365',['Matrix4X4',['../namespaceautd.html#ae31cd21ed380b3498324e000fbb6ee43',1,'autd']]]
+  ['quaternion_283',['Quaternion',['../namespaceautd_1_1core.html#ac1b3521a7f62f7dbe88d26bdf82e25ed',1,'autd::core']]]
 ];

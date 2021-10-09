@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['build_14',['Build',['../classautd_1_1Gain.html#af2538717f850810769c349c93bdf12b6',1,'autd::Gain']]]
+  ['build_8',['build',['../classautd_1_1core_1_1Gain.html#a937a2d79eb08cea4585e2c45a30499cb',1,'autd::core::Gain']]]
 ];

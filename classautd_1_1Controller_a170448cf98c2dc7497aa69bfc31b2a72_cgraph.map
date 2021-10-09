@@ -1,0 +1,10 @@
+<map id="autd::Controller::close" name="autd::Controller::close">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,151,57"/>
+<area shape="rect" id="node2" href="$classautd_1_1Controller.html#a8a90ce7f1cdb6a18b2ac9fcf55dbb977" title=" " alt="" coords="199,5,341,32"/>
+<area shape="rect" id="node3" href="$classautd_1_1Controller.html#ab9bf24983d0c662baafdda9fb1b75401" title=" " alt="" coords="201,56,339,83"/>
+<area shape="rect" id="node4" href="$classautd_1_1core_1_1Gain.html#a5ad47205871962ee6dc088b3a0bd2807" title="Generate empty gain." alt="" coords="389,31,543,57"/>
+<area shape="rect" id="node5" href="$classautd_1_1Controller.html#affcd2dab1fe3f16df92dd6c11fa57270" title=" " alt="" coords="395,81,537,108"/>
+<area shape="rect" id="node6" href="$classautd_1_1core_1_1Logic.html#ae60912dc6a317c1aef21127628a94e4d" title="Pack data body which contain duty data of each transducer." alt="" coords="593,9,715,50"/>
+<area shape="rect" id="node7" href="$classautd_1_1core_1_1Logic.html#a854db9dd723f29f77681fc863e5f7756" title="Pack header with COMMAND." alt="" coords="593,74,715,115"/>
+<area shape="rect" id="node8" href="$classautd_1_1core_1_1Logic.html#a6dcc60cb3ba5291333ed7edec6c0adc7" title="Pack data body which contain phase data of each transducer." alt="" coords="591,139,717,181"/>
+</map>

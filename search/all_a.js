@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['l2_5fnorm_78',['l2_norm',['../classautd_1_1utils_1_1Quaternion.html#aa3fa58829e13e2354ff2988616605f41',1,'autd::utils::Quaternion::l2_norm()'],['../structautd_1_1utils_1_1VectorX.html#a134f60d1c123869119a0a0b7375f4f00',1,'autd::utils::VectorX::l2_norm()']]],
-  ['l2_5fnorm_5fsquared_79',['l2_norm_squared',['../classautd_1_1utils_1_1LinalgHelper.html#ad13607323fa80af553450f65f35b8656',1,'autd::utils::LinalgHelper::l2_norm_squared()'],['../classautd_1_1utils_1_1Quaternion.html#a062792be1d8c3e1e0da646dbf3051d46',1,'autd::utils::Quaternion::l2_norm_squared()'],['../structautd_1_1utils_1_1VectorX.html#acda6c5d7a953246846af5525af078d90',1,'autd::utils::VectorX::l2_norm_squared()']]],
-  ['linalg_2ehpp_80',['linalg.hpp',['../linalg_8hpp.html',1,'']]],
-  ['linalghelper_81',['LinalgHelper',['../classautd_1_1utils_1_1LinalgHelper.html',1,'autd::utils']]],
-  ['link_82',['Link',['../classautd_1_1Link.html',1,'autd::Link'],['../classautd_1_1Link.html#a96f6c143aaf14f1fed184b48d1d636dc',1,'autd::Link::Link()=default'],['../classautd_1_1Link.html#a2fe0196b64772ff491adb512b710b1ac',1,'autd::Link::Link(const Link &amp;v)=delete'],['../classautd_1_1Link.html#ab95b840e05455eb9112c126dd197c0e3',1,'autd::Link::Link(Link &amp;&amp;obj)=delete']]],
-  ['link_2ehpp_83',['link.hpp',['../link_8hpp.html',1,'']]],
-  ['linkconfiguration_84',['LinkConfiguration',['../classautd_1_1LinkConfiguration.html',1,'autd']]],
-  ['linkptr_85',['LinkPtr',['../namespaceautd.html#a167c6d4cec3c308abb720b12521be528',1,'autd']]]
+  ['link_69',['Link',['../classautd_1_1core_1_1Link.html',1,'autd::core::Link'],['../classautd_1_1core_1_1Link.html#aa5f1eae6e7a66c91f90c4297d7edc6de',1,'autd::core::Link::Link()=default'],['../classautd_1_1core_1_1Link.html#ae914a5acc6e452710b169f72a0267f8b',1,'autd::core::Link::Link(const Link &amp;v)=delete'],['../classautd_1_1core_1_1Link.html#aac7d742710a50d401fd04867d4411030',1,'autd::core::Link::Link(Link &amp;&amp;obj)=default']]],
+  ['link_2ehpp_70',['link.hpp',['../link_8hpp.html',1,'']]],
+  ['linkconfiguration_71',['LinkConfiguration',['../classautd_1_1core_1_1LinkConfiguration.html',1,'autd::core']]],
+  ['linkerror_72',['LinkError',['../classautd_1_1core_1_1exception_1_1LinkError.html',1,'autd::core::exception::LinkError'],['../classautd_1_1core_1_1exception_1_1LinkError.html#a14073d60b92ebb9c53eacde69f457051',1,'autd::core::exception::LinkError::LinkError(std::string const &amp;message)'],['../classautd_1_1core_1_1exception_1_1LinkError.html#a9c67cdcb7a9dded4fd36fad7e721c598',1,'autd::core::exception::LinkError::LinkError(char const *message)']]],
+  ['linkptr_73',['LinkPtr',['../namespaceautd_1_1core.html#a0200527a2a6df4631ae21d855ae8cdcf',1,'autd::core']]],
+  ['logic_74',['Logic',['../classautd_1_1core_1_1Logic.html',1,'autd::core']]],
+  ['logic_2ehpp_75',['logic.hpp',['../logic_8hpp.html',1,'']]]
 ];

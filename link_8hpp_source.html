@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>autd3-freq-shift: include/link.hpp Source File</title>
+<title>autd3-freq-shift: include/autd3-freq-shift/core/link.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">autd3-freq-shift
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
   </td>
  </tr>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ca12f3d2d116471d74412019bc9f2816.html">autd3-freq-shift</a></li><li class="navelem"><a class="el" href="dir_a021bce49e636095c283fc55fa2b4275.html">core</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -71,11 +71,11 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="link_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// File: link.hpp</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Project: include</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Created Date: 14/04/2021</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Project: core</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Created Date: 11/05/2021</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Author: Shun Suzuki</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// -----</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Last Modified: 26/04/2021</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Last Modified: 09/10/2021</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -----</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// Copyright (c) 2021 Hapis Lab. All rights reserved.</span></div>
@@ -84,77 +84,67 @@ $(function() {
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="result_8hpp.html">result.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceautd.html">autd</a> {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classautd_1_1LinkConfiguration.html">   22</a></span>&#160;<span class="keyword">class </span><a class="code" href="classautd_1_1LinkConfiguration.html">LinkConfiguration</a> {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classautd_1_1LinkConfiguration.html#abbde198b616e98cbb32292d8f52d40a2">   24</a></span>&#160;  std::vector&lt;uint16_t&gt; <a class="code" href="classautd_1_1LinkConfiguration.html#abbde198b616e98cbb32292d8f52d40a2">freq_cycles</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;};</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"> * @brief Link is the interface to the AUTD device</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="classautd_1_1Link.html">Link</a> {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#a96f6c143aaf14f1fed184b48d1d636dc">   32</a></span>&#160;  <a class="code" href="classautd_1_1Link.html#a96f6c143aaf14f1fed184b48d1d636dc">Link</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#a4a98d040320bada7b8404df226487f22">   33</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classautd_1_1Link.html#a4a98d040320bada7b8404df226487f22">~Link</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#a2fe0196b64772ff491adb512b710b1ac">   34</a></span>&#160;  <a class="code" href="classautd_1_1Link.html#a2fe0196b64772ff491adb512b710b1ac">Link</a>(<span class="keyword">const</span> <a class="code" href="classautd_1_1Link.html">Link</a>&amp; v) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#af1737ad96f954ddf56b5347558e3d712">   35</a></span>&#160;  <a class="code" href="classautd_1_1Link.html">Link</a>&amp; <a class="code" href="classautd_1_1Link.html#af1737ad96f954ddf56b5347558e3d712">operator=</a>(<span class="keyword">const</span> <a class="code" href="classautd_1_1Link.html">Link</a>&amp; obj) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#ab95b840e05455eb9112c126dd197c0e3">   36</a></span>&#160;  <a class="code" href="classautd_1_1Link.html#ab95b840e05455eb9112c126dd197c0e3">Link</a>(<a class="code" href="classautd_1_1Link.html">Link</a>&amp;&amp; obj) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#a53dbac1869eb77981f8acbca5a06175b">   37</a></span>&#160;  <a class="code" href="classautd_1_1Link.html">Link</a>&amp; <a class="code" href="classautd_1_1Link.html#a53dbac1869eb77981f8acbca5a06175b">operator=</a>(<a class="code" href="classautd_1_1Link.html">Link</a>&amp;&amp; obj) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">  /**</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">   * @brief Open link</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">   * @return return Ok(whether succeeded to open), or Err(error msg) if some unrecoverable error occurred</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceautd_1_1core.html">autd::core</a> {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1LinkConfiguration.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="classautd_1_1core_1_1LinkConfiguration.html">LinkConfiguration</a> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1LinkConfiguration.html#a26bccd3fbf77440a563a8fe8f44ae6cb">   21</a></span>&#160;  std::vector&lt;uint16_t&gt; <a class="code" href="classautd_1_1core_1_1LinkConfiguration.html#a26bccd3fbf77440a563a8fe8f44ae6cb">freq_cycles</a>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"> * @brief Link is the interface to the AUTD device</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html">   27</a></span>&#160;<span class="keyword">class </span><a class="code" href="classautd_1_1core_1_1Link.html">Link</a> {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#aa5f1eae6e7a66c91f90c4297d7edc6de">   29</a></span>&#160;  <a class="code" href="classautd_1_1core_1_1Link.html#aa5f1eae6e7a66c91f90c4297d7edc6de">Link</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#a5c0ebad0a687cf90c56a84feaa510627">   30</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classautd_1_1core_1_1Link.html#a5c0ebad0a687cf90c56a84feaa510627">~Link</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#ae914a5acc6e452710b169f72a0267f8b">   31</a></span>&#160;  <a class="code" href="classautd_1_1core_1_1Link.html#ae914a5acc6e452710b169f72a0267f8b">Link</a>(<span class="keyword">const</span> <a class="code" href="classautd_1_1core_1_1Link.html">Link</a>&amp; v) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#a47fcf6d547dd439bc1dedda36a5dbde9">   32</a></span>&#160;  <a class="code" href="classautd_1_1core_1_1Link.html">Link</a>&amp; <a class="code" href="classautd_1_1core_1_1Link.html#a47fcf6d547dd439bc1dedda36a5dbde9">operator=</a>(<span class="keyword">const</span> <a class="code" href="classautd_1_1core_1_1Link.html">Link</a>&amp; obj) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#aac7d742710a50d401fd04867d4411030">   33</a></span>&#160;  <a class="code" href="classautd_1_1core_1_1Link.html#aac7d742710a50d401fd04867d4411030">Link</a>(<a class="code" href="classautd_1_1core_1_1Link.html">Link</a>&amp;&amp; obj) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#a231479700b8b5fb37fbedce2bc0044d6">   34</a></span>&#160;  <a class="code" href="classautd_1_1core_1_1Link.html">Link</a>&amp; <a class="code" href="classautd_1_1core_1_1Link.html#a231479700b8b5fb37fbedce2bc0044d6">operator=</a>(<a class="code" href="classautd_1_1core_1_1Link.html">Link</a>&amp;&amp; obj) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">  /**</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">   * @brief Open link</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">   */</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#a801554f1318ea931baaea0a708b9756b">   39</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classautd_1_1core_1_1Link.html#a801554f1318ea931baaea0a708b9756b">open</a>(<span class="keyword">const</span> <a class="code" href="classautd_1_1core_1_1LinkConfiguration.html">LinkConfiguration</a>&amp; config) = 0;<span class="comment"></span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">  /**</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">   * @brief Close link</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">   */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#a8c690b8cf03deaae9dd64b9e6edc7dd9">   43</a></span>&#160;  [[nodiscard]] <span class="keyword">virtual</span> <a class="code" href="classautd_1_1Result.html">Result&lt;bool, std::string&gt;</a> <a class="code" href="classautd_1_1Link.html#a8c690b8cf03deaae9dd64b9e6edc7dd9">Open</a>(<a class="code" href="classautd_1_1LinkConfiguration.html">LinkConfiguration</a> config) = 0;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">  /**</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">   * @brief Close link</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">   * @return return Ok(whether succeeded to close), or Err(error msg) if some unrecoverable error occurred</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">   */</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#af875b52ffbc21a847cb9cec4d38a57f1">   49</a></span>&#160;  [[nodiscard]] <span class="keyword">virtual</span> <a class="code" href="classautd_1_1Result.html">Result&lt;bool, std::string&gt;</a> <a class="code" href="classautd_1_1Link.html#af875b52ffbc21a847cb9cec4d38a57f1">Close</a>() = 0;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">  /**</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">   * @brief  Send data to devices</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">   * @return return Ok(whether succeeded to send), or Err(error msg) if some unrecoverable error occurred</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">   */</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#a90728676b3b98b369999dca012b5f214">   55</a></span>&#160;  [[nodiscard]] <span class="keyword">virtual</span> <a class="code" href="classautd_1_1Result.html">Result&lt;bool, std::string&gt;</a> <a class="code" href="classautd_1_1Link.html#a90728676b3b98b369999dca012b5f214">Send</a>(<span class="keywordtype">size_t</span> size, <span class="keyword">const</span> uint8_t* buf) = 0;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">  /**</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">   * @brief  Read data from devices</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">   * @return return Ok(whether succeeded to read), or Err(error msg) if some unrecoverable error occurred</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">   */</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#af8630412b37143673ea325ce3f285d31">   61</a></span>&#160;  [[nodiscard]] <span class="keyword">virtual</span> <a class="code" href="classautd_1_1Result.html">Result&lt;bool, std::string&gt;</a> <a class="code" href="classautd_1_1Link.html#af8630412b37143673ea325ce3f285d31">Read</a>(uint8_t* rx, <span class="keywordtype">size_t</span> buffer_len) = 0;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classautd_1_1Link.html#aa5e45d2459f5f2505ef7c6c8c2897b69">   62</a></span>&#160;  [[nodiscard]] <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classautd_1_1Link.html#aa5e45d2459f5f2505ef7c6c8c2897b69">is_open</a>() = 0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="namespaceautd.html#a167c6d4cec3c308abb720b12521be528">   65</a></span>&#160;<span class="keyword">using</span> <a class="code" href="namespaceautd.html#a167c6d4cec3c308abb720b12521be528">LinkPtr</a> = std::unique_ptr&lt;Link&gt;;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}  <span class="comment">// namespace autd</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#a92aedf7012bd8db61b843a03f4aff6f4">   43</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classautd_1_1core_1_1Link.html#a92aedf7012bd8db61b843a03f4aff6f4">close</a>() = 0;<span class="comment"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">  /**</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">   * @brief  Send data to devices</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">   */</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#abab4352b8f6e32951e495b6c8bd90beb">   47</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classautd_1_1core_1_1Link.html#abab4352b8f6e32951e495b6c8bd90beb">send</a>(<span class="keyword">const</span> uint8_t* buf, <span class="keywordtype">size_t</span> size) = 0;<span class="comment"></span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">  /**</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">   * @brief  Read data from devices</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">   */</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#afaec14875ff26c9340020409b42101b0">   51</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classautd_1_1core_1_1Link.html#afaec14875ff26c9340020409b42101b0">read</a>(uint8_t* rx, <span class="keywordtype">size_t</span> buffer_len) = 0;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classautd_1_1core_1_1Link.html#abe338562e71400116c31be83852e0dd5">   53</a></span>&#160;  [[nodiscard]] <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classautd_1_1core_1_1Link.html#abe338562e71400116c31be83852e0dd5">is_open</a>() = 0;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespaceautd_1_1core.html#a0200527a2a6df4631ae21d855ae8cdcf">   56</a></span>&#160;<span class="keyword">using</span> <a class="code" href="namespaceautd_1_1core.html#a0200527a2a6df4631ae21d855ae8cdcf">LinkPtr</a> = std::unique_ptr&lt;Link&gt;;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}  <span class="comment">// namespace autd::core</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassautd_1_1Link_html_a2fe0196b64772ff491adb512b710b1ac"><div class="ttname"><a href="classautd_1_1Link.html#a2fe0196b64772ff491adb512b710b1ac">autd::Link::Link</a></div><div class="ttdeci">Link(const Link &amp;v)=delete</div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_a8c690b8cf03deaae9dd64b9e6edc7dd9"><div class="ttname"><a href="classautd_1_1Link.html#a8c690b8cf03deaae9dd64b9e6edc7dd9">autd::Link::Open</a></div><div class="ttdeci">virtual Result&lt; bool, std::string &gt; Open(LinkConfiguration config)=0</div><div class="ttdoc">Open link.</div></div>
-<div class="ttc" id="anamespaceautd_html"><div class="ttname"><a href="namespaceautd.html">autd</a></div><div class="ttdef"><b>Definition:</b> <a href="autd__types_8hpp_source.html#l00014">autd_types.hpp:14</a></div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_af1737ad96f954ddf56b5347558e3d712"><div class="ttname"><a href="classautd_1_1Link.html#af1737ad96f954ddf56b5347558e3d712">autd::Link::operator=</a></div><div class="ttdeci">Link &amp; operator=(const Link &amp;obj)=delete</div></div>
-<div class="ttc" id="aclassautd_1_1LinkConfiguration_html_abbde198b616e98cbb32292d8f52d40a2"><div class="ttname"><a href="classautd_1_1LinkConfiguration.html#abbde198b616e98cbb32292d8f52d40a2">autd::LinkConfiguration::freq_cycles</a></div><div class="ttdeci">std::vector&lt; uint16_t &gt; freq_cycles</div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00024">link.hpp:24</a></div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_a96f6c143aaf14f1fed184b48d1d636dc"><div class="ttname"><a href="classautd_1_1Link.html#a96f6c143aaf14f1fed184b48d1d636dc">autd::Link::Link</a></div><div class="ttdeci">Link()=default</div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_af875b52ffbc21a847cb9cec4d38a57f1"><div class="ttname"><a href="classautd_1_1Link.html#af875b52ffbc21a847cb9cec4d38a57f1">autd::Link::Close</a></div><div class="ttdeci">virtual Result&lt; bool, std::string &gt; Close()=0</div><div class="ttdoc">Close link.</div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_ab95b840e05455eb9112c126dd197c0e3"><div class="ttname"><a href="classautd_1_1Link.html#ab95b840e05455eb9112c126dd197c0e3">autd::Link::Link</a></div><div class="ttdeci">Link(Link &amp;&amp;obj)=delete</div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_a53dbac1869eb77981f8acbca5a06175b"><div class="ttname"><a href="classautd_1_1Link.html#a53dbac1869eb77981f8acbca5a06175b">autd::Link::operator=</a></div><div class="ttdeci">Link &amp; operator=(Link &amp;&amp;obj)=delete</div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_af8630412b37143673ea325ce3f285d31"><div class="ttname"><a href="classautd_1_1Link.html#af8630412b37143673ea325ce3f285d31">autd::Link::Read</a></div><div class="ttdeci">virtual Result&lt; bool, std::string &gt; Read(uint8_t *rx, size_t buffer_len)=0</div><div class="ttdoc">Read data from devices.</div></div>
-<div class="ttc" id="aclassautd_1_1Link_html"><div class="ttname"><a href="classautd_1_1Link.html">autd::Link</a></div><div class="ttdoc">Link is the interface to the AUTD device.</div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00030">link.hpp:30</a></div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_a4a98d040320bada7b8404df226487f22"><div class="ttname"><a href="classautd_1_1Link.html#a4a98d040320bada7b8404df226487f22">autd::Link::~Link</a></div><div class="ttdeci">virtual ~Link()=default</div></div>
-<div class="ttc" id="anamespaceautd_html_a167c6d4cec3c308abb720b12521be528"><div class="ttname"><a href="namespaceautd.html#a167c6d4cec3c308abb720b12521be528">autd::LinkPtr</a></div><div class="ttdeci">std::unique_ptr&lt; Link &gt; LinkPtr</div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00065">link.hpp:65</a></div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_a90728676b3b98b369999dca012b5f214"><div class="ttname"><a href="classautd_1_1Link.html#a90728676b3b98b369999dca012b5f214">autd::Link::Send</a></div><div class="ttdeci">virtual Result&lt; bool, std::string &gt; Send(size_t size, const uint8_t *buf)=0</div><div class="ttdoc">Send data to devices.</div></div>
-<div class="ttc" id="aclassautd_1_1LinkConfiguration_html"><div class="ttname"><a href="classautd_1_1LinkConfiguration.html">autd::LinkConfiguration</a></div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00022">link.hpp:22</a></div></div>
-<div class="ttc" id="aclassautd_1_1Result_html"><div class="ttname"><a href="classautd_1_1Result.html">autd::Result</a></div><div class="ttdef"><b>Definition:</b> <a href="result_8hpp_source.html#l00021">result.hpp:21</a></div></div>
-<div class="ttc" id="aclassautd_1_1Link_html_aa5e45d2459f5f2505ef7c6c8c2897b69"><div class="ttname"><a href="classautd_1_1Link.html#aa5e45d2459f5f2505ef7c6c8c2897b69">autd::Link::is_open</a></div><div class="ttdeci">virtual bool is_open()=0</div></div>
-<div class="ttc" id="aresult_8hpp_html"><div class="ttname"><a href="result_8hpp.html">result.hpp</a></div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1LinkConfiguration_html"><div class="ttname"><a href="classautd_1_1core_1_1LinkConfiguration.html">autd::core::LinkConfiguration</a></div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00019">link.hpp:19</a></div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_a47fcf6d547dd439bc1dedda36a5dbde9"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#a47fcf6d547dd439bc1dedda36a5dbde9">autd::core::Link::operator=</a></div><div class="ttdeci">Link &amp; operator=(const Link &amp;obj)=delete</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_abab4352b8f6e32951e495b6c8bd90beb"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#abab4352b8f6e32951e495b6c8bd90beb">autd::core::Link::send</a></div><div class="ttdeci">virtual void send(const uint8_t *buf, size_t size)=0</div><div class="ttdoc">Send data to devices.</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_a801554f1318ea931baaea0a708b9756b"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#a801554f1318ea931baaea0a708b9756b">autd::core::Link::open</a></div><div class="ttdeci">virtual void open(const LinkConfiguration &amp;config)=0</div><div class="ttdoc">Open link.</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_abe338562e71400116c31be83852e0dd5"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#abe338562e71400116c31be83852e0dd5">autd::core::Link::is_open</a></div><div class="ttdeci">virtual bool is_open()=0</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_ae914a5acc6e452710b169f72a0267f8b"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#ae914a5acc6e452710b169f72a0267f8b">autd::core::Link::Link</a></div><div class="ttdeci">Link(const Link &amp;v)=delete</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1LinkConfiguration_html_a26bccd3fbf77440a563a8fe8f44ae6cb"><div class="ttname"><a href="classautd_1_1core_1_1LinkConfiguration.html#a26bccd3fbf77440a563a8fe8f44ae6cb">autd::core::LinkConfiguration::freq_cycles</a></div><div class="ttdeci">std::vector&lt; uint16_t &gt; freq_cycles</div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00021">link.hpp:21</a></div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_aa5f1eae6e7a66c91f90c4297d7edc6de"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#aa5f1eae6e7a66c91f90c4297d7edc6de">autd::core::Link::Link</a></div><div class="ttdeci">Link()=default</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_a5c0ebad0a687cf90c56a84feaa510627"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#a5c0ebad0a687cf90c56a84feaa510627">autd::core::Link::~Link</a></div><div class="ttdeci">virtual ~Link()=default</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_a231479700b8b5fb37fbedce2bc0044d6"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#a231479700b8b5fb37fbedce2bc0044d6">autd::core::Link::operator=</a></div><div class="ttdeci">Link &amp; operator=(Link &amp;&amp;obj)=default</div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_afaec14875ff26c9340020409b42101b0"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#afaec14875ff26c9340020409b42101b0">autd::core::Link::read</a></div><div class="ttdeci">virtual void read(uint8_t *rx, size_t buffer_len)=0</div><div class="ttdoc">Read data from devices.</div></div>
+<div class="ttc" id="anamespaceautd_1_1core_html"><div class="ttname"><a href="namespaceautd_1_1core.html">autd::core</a></div><div class="ttdef"><b>Definition:</b> <a href="ec__config_8hpp_source.html#l00017">ec_config.hpp:17</a></div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_a92aedf7012bd8db61b843a03f4aff6f4"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#a92aedf7012bd8db61b843a03f4aff6f4">autd::core::Link::close</a></div><div class="ttdeci">virtual void close()=0</div><div class="ttdoc">Close link.</div></div>
+<div class="ttc" id="anamespaceautd_1_1core_html_a0200527a2a6df4631ae21d855ae8cdcf"><div class="ttname"><a href="namespaceautd_1_1core.html#a0200527a2a6df4631ae21d855ae8cdcf">autd::core::LinkPtr</a></div><div class="ttdeci">std::unique_ptr&lt; Link &gt; LinkPtr</div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00056">link.hpp:56</a></div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html"><div class="ttname"><a href="classautd_1_1core_1_1Link.html">autd::core::Link</a></div><div class="ttdoc">Link is the interface to the AUTD device.</div><div class="ttdef"><b>Definition:</b> <a href="link_8hpp_source.html#l00027">link.hpp:27</a></div></div>
+<div class="ttc" id="aclassautd_1_1core_1_1Link_html_aac7d742710a50d401fd04867d4411030"><div class="ttname"><a href="classautd_1_1core_1_1Link.html#aac7d742710a50d401fd04867d4411030">autd::core::Link::Link</a></div><div class="ttdeci">Link(Link &amp;&amp;obj)=default</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

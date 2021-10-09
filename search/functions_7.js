@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['identity_246',['Identity',['../structautd_1_1utils_1_1MatrixX.html#ae7b2a28bf7cfc7e0a6193c697fb1ffe4',1,'autd::utils::MatrixX']]],
-  ['inverse_247',['inverse',['../classautd_1_1utils_1_1Quaternion.html#a000f5ee1c3f31a305c86bfba0ed9b2cf',1,'autd::utils::Quaternion']]],
-  ['is_5ferr_248',['is_err',['../classautd_1_1Result.html#a5fd9066fe0049ecbcccd86b9e5e485ed',1,'autd::Result']]],
-  ['is_5fok_249',['is_ok',['../classautd_1_1Result.html#af371eec68d5946029cc967f57e316ed6',1,'autd::Result']]],
-  ['is_5fopen_250',['is_open',['../classautd_1_1Link.html#aa5e45d2459f5f2505ef7c6c8c2897b69',1,'autd::Link']]],
-  ['ismissingtransducer_251',['IsMissingTransducer',['../namespaceautd.html#ab6f4d483d1cb177f9955f7db8aaff155',1,'autd']]]
+  ['is_5fmissing_5ftransducer_202',['is_missing_transducer',['../namespaceautd_1_1core.html#ab6ab1adeb29b6730a92561f0fa2b33b4',1,'autd::core']]],
+  ['is_5fmsg_5fprocessed_203',['is_msg_processed',['../classautd_1_1core_1_1Logic.html#aeddd6abc8f6f5dc1d9b47e1932c1992d',1,'autd::core::Logic']]],
+  ['is_5fopen_204',['is_open',['../classautd_1_1Controller.html#a8e40bb050081b6ae61fbc67d1f21ffd0',1,'autd::Controller::is_open()'],['../classautd_1_1core_1_1Link.html#abe338562e71400116c31be83852e0dd5',1,'autd::core::Link::is_open()'],['../classautd_1_1link_1_1SOEM.html#a8994910af86a8e32b5584e598653e182',1,'autd::link::SOEM::is_open()']]]
 ];

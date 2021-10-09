@@ -1,5 +1,0 @@
-<map id="autd::Gain::CheckAndInit" name="autd::Gain::CheckAndInit">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,169,57"/>
-<area shape="rect" id="node2" href="$classautd_1_1Gain.html#a77c0b0861ba0bdaca6d2e3e4e4c7bf9a" title="Getter function for the duty of amplitude and phase of each transducers." alt="" coords="223,5,333,32"/>
-<area shape="rect" id="node3" href="$classautd_1_1Gain.html#ae3a89d36aec8acc9ce3cfe995f8304c6" title="Getter function for the phase of amplitude and phase of each transducers." alt="" coords="217,56,339,83"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="include/linalg/quaternion.hpp" name="include/linalg/quaternion.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="51,5,237,32"/>
-<area shape="rect" id="node2" href="$matrix_8hpp.html" title=" " alt="" coords="5,80,165,107"/>
-<area shape="rect" id="node3" href="$linalg_8hpp.html" title=" " alt="" coords="83,155,205,181"/>
-<area shape="rect" id="node4" href="$device_8hpp.html" title=" " alt="" coords="6,229,135,256"/>
-<area shape="rect" id="node7" href="$gain_8hpp.html" title=" " alt="" coords="160,229,275,256"/>
-<area shape="rect" id="node5" href="$controller_8hpp.html" title=" " alt="" coords="72,304,216,331"/>
-<area shape="rect" id="node6" href="$autd3_8hpp.html" title=" " alt="" coords="83,379,205,405"/>
-</map>

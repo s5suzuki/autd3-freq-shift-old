@@ -1,0 +1,5 @@
+<map id="autd::Controller::set_frequency" name="autd::Controller::set_frequency">
+<area shape="rect" id="node1" title=" " alt="" coords="5,39,137,80"/>
+<area shape="rect" id="node2" href="$classautd_1_1core_1_1Logic.html#a4447732630ed2cf08b8fcb5d47b6a54b" title="Pack frequency body." alt="" coords="185,5,308,47"/>
+<area shape="rect" id="node3" href="$classautd_1_1core_1_1Logic.html#a854db9dd723f29f77681fc863e5f7756" title="Pack header with COMMAND." alt="" coords="185,71,308,112"/>
+</map>

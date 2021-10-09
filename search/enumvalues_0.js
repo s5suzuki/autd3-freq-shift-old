@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['force_5ffan_371',['FORCE_FAN',['../namespaceautd.html#af86dbe2ccfe3143e7335fd8d1ec5f3c7a8901d1becf0d77c05ca98255c531b10f',1,'autd']]]
+  ['clear_287',['CLEAR',['../namespaceautd_1_1core.html#a57e07b80de9e728f5ece2a54a62ffddba813461e0c58e7ad59a2fd83ca2237fec',1,'autd::core']]]
 ];

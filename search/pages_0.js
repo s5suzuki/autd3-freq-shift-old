@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['autd3_20api_20documents_380',['AUTD3 API Documents',['../index.html',1,'']]]
+  ['autd3_2dfrequency_2dshift_20api_20documents_298',['AUTD3-frequency-shift API Documents',['../index.html',1,'']]]
 ];

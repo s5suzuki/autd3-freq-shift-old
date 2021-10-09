@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['trans_5fsize_5fmm_359',['TRANS_SIZE_MM',['../namespaceautd.html#ad5a64bb85f1759deaf21c027a644a2b7',1,'autd']]]
+  ['trans_5fspacing_5fmm_272',['TRANS_SPACING_MM',['../namespaceautd_1_1core.html#a08f6b896f9cf899e8b7ede7f3c0507c0',1,'autd::core']]]
 ];

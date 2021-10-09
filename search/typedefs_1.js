@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['controllerptr_361',['ControllerPtr',['../namespaceautd.html#a9deb417d7dafe279190cd074ca3d458f',1,'autd']]]
+  ['dataarray_278',['DataArray',['../namespaceautd_1_1core.html#a74be7779b27479da7e4076005748427d',1,'autd::core']]]
 ];

@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['send_139',['Send',['../classautd_1_1Link.html#a90728676b3b98b369999dca012b5f214',1,'autd::Link']]],
-  ['sendblocking_140',['SendBlocking',['../classautd_1_1Controller.html#acd804c286dbe9fc935886f98a22663b2',1,'autd::Controller']]],
-  ['setfreqcycles_141',['SetFreqCycles',['../classautd_1_1Controller.html#a84f23827df6b20a878533ff9519936cb',1,'autd::Controller']]],
-  ['size_142',['size',['../structautd_1_1utils_1_1MatrixX.html#a06a5aeb9194cd9be28b5d267cc2da509',1,'autd::utils::MatrixX::size()'],['../structautd_1_1utils_1_1VectorX.html#adcd39b225ebcfeb09de9b01f36b50be4',1,'autd::utils::VectorX::size()']]],
-  ['stop_143',['Stop',['../classautd_1_1Controller.html#afaa8b43d1a5a500a5b1bbfbf4712dc1d',1,'autd::Controller']]],
-  ['sub_144',['sub',['../classautd_1_1utils_1_1LinalgHelper.html#a0279b511d63421047535387e678d1e4a',1,'autd::utils::LinalgHelper::sub(V *dst, const V &amp;src)'],['../classautd_1_1utils_1_1LinalgHelper.html#afc7857e168ffa65692731b9383ba117b',1,'autd::utils::LinalgHelper::sub(const V &amp;lhs, const V &amp;rhs)']]]
+  ['send_107',['send',['../classautd_1_1Controller.html#affcd2dab1fe3f16df92dd6c11fa57270',1,'autd::Controller::send()'],['../classautd_1_1core_1_1Link.html#abab4352b8f6e32951e495b6c8bd90beb',1,'autd::core::Link::send()'],['../classautd_1_1link_1_1SOEM.html#a40c18a49612ba7ab8b3a8b7c6b1bfd02',1,'autd::link::SOEM::send()']]],
+  ['seq_5ffoci_5fmode_108',['SEQ_FOCI_MODE',['../namespaceautd_1_1core.html#a57e07b80de9e728f5ece2a54a62ffddbab9c4f26c302d42b9fbcf42798ab937c7',1,'autd::core']]],
+  ['set_5ffrequency_109',['set_frequency',['../classautd_1_1Controller.html#aa0aa2dd5bc65eedc7854845b3209d568',1,'autd::Controller']]],
+  ['soem_110',['SOEM',['../classautd_1_1link_1_1SOEM.html',1,'autd::link::SOEM'],['../classautd_1_1link_1_1SOEM.html#a8e3f7ed1433bc7b416f9c849ba640b48',1,'autd::link::SOEM::SOEM()=default'],['../classautd_1_1link_1_1SOEM.html#a56854020c789be4a86343dbc6733fcba',1,'autd::link::SOEM::SOEM(const SOEM &amp;v) noexcept=delete'],['../classautd_1_1link_1_1SOEM.html#aed7a3567334b8bce9a349010f13f7342',1,'autd::link::SOEM::SOEM(SOEM &amp;&amp;obj)=delete']]],
+  ['soem_2ehpp_111',['soem.hpp',['../soem_8hpp.html',1,'']]],
+  ['sound_5fspeed_112',['sound_speed',['../classautd_1_1core_1_1Geometry.html#af670cbb575498005573e7902775c029b',1,'autd::core::Geometry']]],
+  ['start_113',['start',['../classautd_1_1core_1_1Timer.html#a8fd087372ba4767fca7c8665dbd5c30d',1,'autd::core::Timer::start(std::unique_ptr&lt; T &gt; handler, const uint32_t interval_us)'],['../classautd_1_1core_1_1Timer.html#a8fd087372ba4767fca7c8665dbd5c30d',1,'autd::core::Timer::start(std::unique_ptr&lt; T &gt; handler, const uint32_t interval_us)'],['../classautd_1_1core_1_1Timer.html#a1771337ca9da79548e5cdf9ef4a43947',1,'autd::core::Timer::start(std::unique_ptr&lt; T &gt; handler, uint32_t interval_us)']]],
+  ['stop_114',['stop',['../classautd_1_1Controller.html#ab9bf24983d0c662baafdda9fb1b75401',1,'autd::Controller::stop()'],['../classautd_1_1core_1_1Timer.html#abcf2fb78a17d91a3ebef5801a976c40d',1,'autd::core::Timer::stop()'],['../classautd_1_1core_1_1Timer.html#abcf2fb78a17d91a3ebef5801a976c40d',1,'autd::core::Timer::stop()'],['../classautd_1_1core_1_1Timer.html#abcf2fb78a17d91a3ebef5801a976c40d',1,'autd::core::Timer::stop()']]]
 ];

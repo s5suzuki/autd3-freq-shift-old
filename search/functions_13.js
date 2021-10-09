@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['w_313',['w',['../classautd_1_1utils_1_1Quaternion.html#a23a9e1878bb45b0982834cf905ee9402',1,'autd::utils::Quaternion::w() noexcept'],['../classautd_1_1utils_1_1Quaternion.html#ad1e45b4ca2642e44d26a25b1e6dfe42c',1,'autd::utils::Quaternion::w() const noexcept'],['../classautd_1_1utils_1_1Vector4.html#a7d4e89ad7be0965619864ac6cd243d40',1,'autd::utils::Vector4::w() noexcept'],['../classautd_1_1utils_1_1Vector4.html#ac5fd8d2410a628a4ff5de912e5bbcb59',1,'autd::utils::Vector4::w() const noexcept']]]
+  ['_7econtroller_237',['~Controller',['../classautd_1_1Controller.html#a23ae9f33781c7aef3f7f1819a2161e29',1,'autd::Controller']]],
+  ['_7egain_238',['~Gain',['../classautd_1_1core_1_1Gain.html#af0659a045fa9c2f8526b1658570dd8a5',1,'autd::core::Gain']]],
+  ['_7egeometry_239',['~Geometry',['../classautd_1_1core_1_1Geometry.html#ac8d1009176cf5e65bdad96e15f1467cd',1,'autd::core::Geometry']]],
+  ['_7elink_240',['~Link',['../classautd_1_1core_1_1Link.html#a5c0ebad0a687cf90c56a84feaa510627',1,'autd::core::Link']]],
+  ['_7esoem_241',['~SOEM',['../classautd_1_1link_1_1SOEM.html#a18d9b965b938688b8788eee0e931c6d0',1,'autd::link::SOEM']]],
+  ['_7etimer_242',['~Timer',['../classautd_1_1core_1_1Timer.html#a95ed2cd1917f289d8d639230a40c0af0',1,'autd::core::Timer::~Timer()'],['../classautd_1_1core_1_1Timer.html#a95ed2cd1917f289d8d639230a40c0af0',1,'autd::core::Timer::~Timer()'],['../classautd_1_1core_1_1Timer.html#a95ed2cd1917f289d8d639230a40c0af0',1,'autd::core::Timer::~Timer()']]]
 ];

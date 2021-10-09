@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gainptr_363',['GainPtr',['../namespaceautd.html#aedda96aa2d743a2767ca70e1ec7b4fce',1,'autd']]]
+  ['linkptr_281',['LinkPtr',['../namespaceautd_1_1core.html#a0200527a2a6df4631ae21d855ae8cdcf',1,'autd::core']]]
 ];

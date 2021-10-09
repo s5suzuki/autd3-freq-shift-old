@@ -1,0 +1,6 @@
+<map id="autd::Controller::send" name="autd::Controller::send">
+<area shape="rect" id="node1" title=" " alt="" coords="5,78,148,105"/>
+<area shape="rect" id="node2" href="$classautd_1_1core_1_1Logic.html#ae60912dc6a317c1aef21127628a94e4d" title="Pack data body which contain duty data of each transducer." alt="" coords="198,5,321,47"/>
+<area shape="rect" id="node3" href="$classautd_1_1core_1_1Logic.html#a854db9dd723f29f77681fc863e5f7756" title="Pack header with COMMAND." alt="" coords="198,71,321,112"/>
+<area shape="rect" id="node4" href="$classautd_1_1core_1_1Logic.html#a6dcc60cb3ba5291333ed7edec6c0adc7" title="Pack data body which contain phase data of each transducer." alt="" coords="196,136,323,177"/>
+</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['msg_5fid_354',['msg_id',['../structautd_1_1RxGlobalHeader.html#a58c0f7d77c91605e29714e439f039f28',1,'autd::RxGlobalHeader']]]
+  ['header_5fsize_265',['HEADER_SIZE',['../namespaceautd_1_1core.html#a398aa35412a4f9dc848a3ff0d1e87c31',1,'autd::core']]]
 ];

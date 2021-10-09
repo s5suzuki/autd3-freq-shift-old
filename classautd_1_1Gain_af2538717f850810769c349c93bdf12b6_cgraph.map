@@ -1,7 +1,0 @@
-<map id="autd::Gain::Build" name="autd::Gain::Build">
-<area shape="rect" id="node1" title="Calculate amplitude and phase of each transducer." alt="" coords="5,56,120,83"/>
-<area shape="rect" id="node2" href="$classautd_1_1Gain.html#a83a89a596198c32100e68a0ba1258b20" title=" " alt="" coords="168,31,332,57"/>
-<area shape="rect" id="node5" href="$namespaceautd.html#a31c800bcd7416941ae1ce2cede3dc823" title=" " alt="" coords="215,81,285,108"/>
-<area shape="rect" id="node3" href="$classautd_1_1Gain.html#a77c0b0861ba0bdaca6d2e3e4e4c7bf9a" title="Getter function for the duty of amplitude and phase of each transducers." alt="" coords="385,5,496,32"/>
-<area shape="rect" id="node4" href="$classautd_1_1Gain.html#ae3a89d36aec8acc9ce3cfe995f8304c6" title="Getter function for the phase of amplitude and phase of each transducers." alt="" coords="380,56,501,83"/>
-</map>
