@@ -71,8 +71,8 @@ class Controller {
     return true;
   }
 
-  bool Controller::is_open() const { return this->_link != nullptr && this->_link->is_open(); }
-  core::GeometryPtr& Controller::geometry() noexcept { return this->_geometry; }
+  bool is_open() const { return this->_link != nullptr && this->_link->is_open(); }
+  core::GeometryPtr& geometry() noexcept { return this->_geometry; }
 
   bool clear() { return send_header(core::COMMAND::CLEAR); }
 
@@ -103,7 +103,7 @@ class Controller {
     return wait_msg_processed(msg_id, 200);
   }
 
-  std::vector<FirmwareInfo> Controller::firmware_info_list() {
+  std::vector<FirmwareInfo> firmware_info_list() {
     auto concat_byte = [](const uint8_t high, const uint16_t low) { return static_cast<uint16_t>(static_cast<uint16_t>(high) << 8 | low); };
 
     std::vector<FirmwareInfo> infos;
@@ -131,7 +131,7 @@ class Controller {
   }
 
  private:
-  bool Controller::send_header(const core::COMMAND cmd) const {
+  bool send_header(const core::COMMAND cmd) const {
     constexpr auto send_size = sizeof(core::GlobalHeader);
     uint8_t msg_id = 0;
     core::Logic::pack_header(cmd, &_tx_buf[0], &msg_id);
@@ -139,7 +139,7 @@ class Controller {
     return wait_msg_processed(msg_id, 200);
   }
 
-  bool Controller::wait_msg_processed(const uint8_t msg_id, const size_t max_trial) const {
+  bool wait_msg_processed(const uint8_t msg_id, const size_t max_trial) const {
     if (!this->_check_ack) return true;
     const auto num_devices = this->_geometry->num_devices();
     const auto buffer_len = num_devices * core::EC_INPUT_FRAME_SIZE;

@@ -86,7 +86,7 @@ struct Device {
  */
 class Geometry {
  public:
-  Geometry() : _attenuation(0), _temp(340e3) {}
+  Geometry() : _temp(340e3) {}
   ~Geometry() = default;
   Geometry(const Geometry& v) noexcept = default;
   Geometry& operator=(const Geometry& obj) = default;
@@ -212,7 +212,6 @@ class Geometry {
 
  private:
   std::vector<Device> _devices;
-  double _attenuation;
   double _temp;
 };
 }  // namespace core
