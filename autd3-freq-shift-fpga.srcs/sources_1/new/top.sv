@@ -4,7 +4,7 @@
  * Created Date: 27/03/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 28/04/2021
+ * Last Modified: 09/10/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -43,8 +43,6 @@ localparam [7:0] CTRL_FLAGS_ADDR = 8'h0;
 localparam [7:0] FPGA_INFO_ADDR = 8'h1;
 localparam [7:0] CYCLE_ADDR = 8'h10;
 
-localparam int FORCE_FAN_IDX = 4;
-
 logic sys_clk;
 logic bus_clk;
 logic reset;
@@ -74,7 +72,6 @@ assign CPU_DATA  = (~CPU_CS1_N && ~CPU_RD_N && CPU_RDWR) ? cpu_data_out : 16'bz;
 assign tr_wea = (cpu_select == BRAM_TR_SELECT) & (~CPU_WE0_N);
 assign config_wea = (cpu_select == BRAM_CONFIG_SELECT) & (~CPU_WE0_N);
 
-assign FORCE_FAN = ctrl_flags[FORCE_FAN_IDX];
 assign fpga_info = {7'd0, THERMO};
 
 ultrasound_cnt_clk_gen ultrasound_cnt_clk_gen(
@@ -90,21 +87,8 @@ logic sync0_edge;
 assign sync0_edge = (sync0 == 3'b011);
 
 always_ff @(posedge sys_clk) begin
-    if (reset) begin
-        sync0 <= 0;
-    end
-    else begin
-        sync0 <= {sync0[1:0], CAT_SYNC0};
-    end
-end
-
-always_ff @(posedge sys_clk) begin
-    if (reset | sync0_edge) begin
-        time_cnt_for_ultrasound <= 0;
-    end
-    else begin
-        time_cnt_for_ultrasound <= (time_cnt_for_ultrasound == (cycle - 1)) ? 0 : time_cnt_for_ultrasound + 1;
-    end
+    sync0 <= reset ? 0 : {sync0[1:0], CAT_SYNC0};
+    time_cnt_for_ultrasound <= (reset | sync0_edge | time_cnt_for_ultrasound == (cycle - 1)) ? 0 : time_cnt_for_ultrasound + 1;
 end
 //////////////////////////////////// Synchronize ///////////////////////////////////////////
 
@@ -255,6 +239,7 @@ generate begin:TRANSDUCERS_GEN
             pwm_generator#(
                              .WIDTH(WIDTH)
                          ) pwm_generator(
+                             .CLK(sys_clk),
                              .TIME(time_cnt_for_ultrasound),
                              .CYCLE(cycle),
                              .DUTY(duty[ii]),

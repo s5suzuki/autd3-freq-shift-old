@@ -1465,9 +1465,6 @@ set_input_delay -clock clk_out1_ultrasound_cnt_clk_gen -min 0.500 [get_ports CAT
 set_input_delay -clock clk_out1_ultrasound_cnt_clk_gen -max 1.500 [get_ports CAT_SYNC0]
 set_output_delay -clock clk_out1_ultrasound_cnt_clk_gen -min 0.500 [get_ports FORCE_FAN]
 set_output_delay -clock clk_out1_ultrasound_cnt_clk_gen -max 1.500 [get_ports FORCE_FAN]
-set _xlnx_shared_i0 [get_ports XDCR_OUT*]
-set_output_delay -clock clk_out1_ultrasound_cnt_clk_gen -min 0.500 $_xlnx_shared_i0
-set_output_delay -clock clk_out1_ultrasound_cnt_clk_gen -max 1.500 $_xlnx_shared_i0
 
 set_property CFGBVS VCCO [current_design]
 set_property CONFIG_VOLTAGE 3.3 [current_design]
