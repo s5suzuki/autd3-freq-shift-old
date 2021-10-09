@@ -3,104 +3,87 @@
 // Created Date: 19/05/2020
 // Author: Shun Suzuki
 // -----
-// Last Modified: 28/04/2021
+// Last Modified: 09/10/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2020 Hapis Lab. All rights reserved.
 //
 
+#include "autd3-freq-shift/link/soem.hpp"
+
 #include <iostream>
 
-#include "autd3.hpp"
-#include "soemlink.hpp"
+#include "autd3-freq-shift.hpp"
+#include "autd3-freq-shift/core/utils.hpp"
 
-using namespace std;
-using namespace autd;
-
-constexpr Float ULTRASOUND_WAVELENGTH = 8.5f;
-
-class FocalPointGain final : public Gain {
+class FocalPointGain final : public autd::core::Gain {
  public:
-  static GainPtr Create(const Vector3& point) { return std::make_shared<FocalPointGain>(std::forward<const Vector3>(point)); }
+  static autd::GainPtr Create(const autd::Vector3& point) { return std::make_shared<FocalPointGain>(std::forward<const autd::Vector3>(point)); }
 
-  Result<bool, std::string> Build(std::vector<Device>& devices, std::vector<uint16_t>& freq_cycle) override {
-    if (this->_built) return Ok(false);
-
-    CheckAndInit(devices, &this->_duties, &this->_phases);
-
-    for (size_t dev_idx = 0; dev_idx < devices.size(); dev_idx++) {
-      const uint16_t duty = freq_cycle[dev_idx] >> 1;  // 50%
-      const auto& tr_positions = devices[dev_idx].global_trans_positions();
-      for (size_t i = 0; i < NUM_TRANS_IN_UNIT; i++) {
-        const auto& trp = tr_positions[i];
+  void calc(const autd::GeometryPtr& geometry) override {
+    for (size_t dev_idx = 0; dev_idx < geometry->num_devices(); dev_idx++) {
+      const uint16_t freq_cycle = geometry->freq_cycle(dev_idx);
+      const double wavenum = 2.0 * M_PI / geometry->wavelength(dev_idx);
+      for (size_t i = 0; i < autd::NUM_TRANS_IN_UNIT; i++) {
+        const auto& trp = geometry->position(dev_idx, i);
         const auto dist = (trp - this->_point).norm();
-        const auto f_phase = fmod(dist, ULTRASOUND_WAVELENGTH) / ULTRASOUND_WAVELENGTH;
-        const auto phase = static_cast<uint16_t>(std::round(static_cast<float>(freq_cycle[dev_idx]) * (1 - f_phase)));
-        this->_duties[dev_idx][i] = duty;
+        const auto phase = autd::core::Utilities::to_phase(dist * wavenum, freq_cycle);
+        this->_duties[dev_idx][i] = autd::core::Utilities::to_duty(1.0, freq_cycle);
         this->_phases[dev_idx][i] = phase;
       }
     }
-
-    this->_built = true;
-    return Ok(true);
   }
 
-  explicit FocalPointGain(const Vector3& point) : Gain(), _point(std::forward<const Vector3>(point)) {}
+  explicit FocalPointGain(const autd::Vector3& point) : Gain(), _point(std::forward<const autd::Vector3>(point)) {}
 
  private:
-  Vector3 _point = Vector3::Zero();
+  autd::Vector3 _point = autd::Vector3::Zero();
 };
 
-string get_adapter_name() {
-  size_t size;
-  auto adapters = link::SOEMLink::EnumerateAdapters(&size);
-  for (size_t i = 0; i < size; i++) {
-    auto& [fst, snd] = adapters[i];
-    cout << "[" << i << "]: " << fst << ", " << snd << endl;
-  }
+std::string get_adapter_name() {
+  size_t i = 0;
+  const auto adapters = autd::link::SOEM::enumerate_adapters();
+  for (auto&& [desc, name] : adapters) std::cout << "[" << i++ << "]: " << desc << ", " << name << std::endl;
 
-  int index;
-  cout << "Choose number: ";
-  cin >> index;
-  cin.ignore();
+  std::cout << "Choose number: ";
+  std::string in;
+  getline(std::cin, in);
+  std::stringstream s(in);
+  if (const auto empty = in == "\n"; !(s >> i) || i >= adapters.size() || empty) return "";
 
-  return adapters[index].second;
+  return adapters[i].name;
 }
 
-int main() {
-  try {
-    auto cnt = Controller::Create();
+int main() try {
+  auto cnt = autd::Controller::create();
 
-    // FPGA base clk frequency is 50MHz
-    cnt->AddDevices(Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1250);  // 50MHz/1250 = 40kHz
-    cnt->AddDevices(Device::Create(Vector3(0, 0, 0), Vector3(0, 0, 0)), 1200);  // 50MHz/1200 = 41.667kHz
+  // FPGA base clk frequency is 200MHz
+  cnt->geometry()->add_device(autd::Vector3(0, 0, 0), autd::Vector3(0, 0, 0), 5000);  // 200MHz/5000 = 40kHz
+  cnt->geometry()->add_device(autd::Vector3(0, 0, 0), autd::Vector3(0, 0, 0), 4999);  // 200MHz/4999 ~ 40.008kHz
 
-    const auto ifname = get_adapter_name();
-    auto link = link::SOEMLink::Create(ifname, cnt->num_devices());
+  const auto ifname = get_adapter_name();
+  auto link = autd::link::SOEM::create(ifname, cnt->geometry()->num_devices());
 
-    if (auto res = cnt->OpenWith(std::move(link)); res.is_err()) {
-      std::cerr << res.unwrap_err() << std::endl;
-      return ENXIO;
-    }
+  cnt->open(std::move(link));
 
-    cnt->Clear().unwrap();
-    cnt->SetFreqCycles().unwrap();  // Set ultrasound frequency
+  cnt->clear();
+  cnt->set_frequency();  // Set ultrasound frequency
 
-    auto firm_info_list = cnt->firmware_info_list().unwrap();
-    for (auto&& firm_info : firm_info_list) cout << firm_info << endl;
+  const auto firm_info_list = cnt->firmware_info_list();
+  for (auto&& firm_info : firm_info_list) std::cout << firm_info << std::endl;
 
-    const auto center = Vector3(TRANS_SIZE_MM * ((NUM_TRANS_X - 1) / 2.0f), TRANS_SIZE_MM * ((NUM_TRANS_Y - 1) / 2.0f), 150.0f);
-    const auto g = FocalPointGain::Create(center);
-    cnt->SendBlocking(g).unwrap();
+  const auto point =
+      autd::Vector3(autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_X - 1) / 2.0f), autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_Y - 1) / 2.0f), 150.0f);
+  const auto g = FocalPointGain::Create(point);
+  cnt->send(g);
 
-    cout << "press any key to finish..." << endl;
-    cin.ignore();
+  std::cout << "press any key to finish..." << std::endl;
+  std::cin.ignore();
 
-    cnt->Close().unwrap();
+  cnt->close();
 
-    return 0;
-  } catch (exception& e) {
-    std::cerr << e.what() << std::endl;
-    return ENXIO;
-  }
+  return 0;
+} catch (std::exception& e) {
+  std::cerr << e.what() << std::endl;
+  return ENXIO;
 }

@@ -1,8 +1,6 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16)
 
 set (CMAKE_CXX_STANDARD 17)
-
-include_directories(${PROJECT_SOURCE_DIR}/include)
 
 find_package(Threads REQUIRED)
 
@@ -15,7 +13,7 @@ else()
   link_libraries(rt)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif()
- 
+
 add_executable(example_soem soem.cpp)
-target_link_libraries(example_soem link_soem)
-target_include_directories(example_soem PUBLIC ${PROJECT_SOURCE_DIR}/link/soem/include)
+target_link_libraries(example_soem soem_link)
+target_include_directories(example_soem PRIVATE ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/link/soem/include ${EIGEN_PATH})
