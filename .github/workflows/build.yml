@@ -26,7 +26,7 @@ jobs:
         cd client
         cmake -G "Visual Studio 16 2019" -A x64 -B "build"
         cd build
-        msbuild autd3-lite.sln /t:build /p:Configuration=Release
+        msbuild autd3-freq-shift.sln /t:build /p:Configuration=Release
     - name: install gcc-10
       if: matrix.os == 'ubuntu-latest'
       run: |

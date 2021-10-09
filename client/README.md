@@ -9,7 +9,7 @@ run `build.ps1` or run CMake, then open `autd3-freq-shift.sln` in `BUILD_DIR` (d
 [] is a default.
 
 * -BUILD_DIR = [./build]
-* -VS_VERSION = 2017, [2019]
+* -VS_VERSION = 2017, [2019], 2022
 * -ARCH = [x64]
 
 ## Mac/Linux

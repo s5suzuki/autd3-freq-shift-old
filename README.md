@@ -2,7 +2,7 @@
 
 This software is for changing the ultrasound frequency.
 
-Version: 0.1.0-alpha
+Version: 0.2.0
 
 * The firmware codes are available at [here](https://github.com/shinolab/autd3-freq-shift-firmware).
 
@@ -23,7 +23,7 @@ If the number of x changes, the firmware of FPGA or CPU must be upgraded.
 
 ## :ballot_box_with_check: Requirements
 
-* If you use `SOEMLink` on Windows, install [Npcap](https://nmap.org/npcap/) with WinPcap API-compatible mode (recommended) or [WinPcap](https://www.winpcap.org/).
+* Install [Npcap](https://nmap.org/npcap/) with WinPcap API-compatible mode (recommended) or [WinPcap](https://www.winpcap.org/).
 
 ## :beginner: Example
 
