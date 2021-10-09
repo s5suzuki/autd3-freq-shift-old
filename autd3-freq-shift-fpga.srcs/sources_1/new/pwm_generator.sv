@@ -41,7 +41,7 @@ assign PWM_OUT = pwm;
 always_ff @(posedge CLK) begin
     t <= {1'b0, TIME};
     C <= {2'b00, CYCLE};
-    P <= {1'b0, PHASE_DELAY};
+    P <= {1'b0, CYCLE - PHASE_DELAY};
     DL = {2'b00, DUTY[WIDTH-1:1]};
     DR = {2'b00, DUTY[WIDTH-1:1]} + {16'h0000, DUTY[0]};
 
