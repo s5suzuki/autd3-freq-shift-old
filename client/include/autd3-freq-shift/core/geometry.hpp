@@ -3,7 +3,7 @@
 // Created Date: 14/04/2021
 // Author: Shun Suzuki
 // -----
-// Last Modified: 09/10/2021
+// Last Modified: 10/10/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -86,7 +86,7 @@ struct Device {
  */
 class Geometry {
  public:
-  Geometry() : _temp(340e3) {}
+  Geometry() : _c(340e3) {}
   ~Geometry() = default;
   Geometry(const Geometry& v) noexcept = default;
   Geometry& operator=(const Geometry& obj) = default;
@@ -136,14 +136,14 @@ class Geometry {
   void clear_devices() { std::vector<Device>().swap(this->_devices); }
 
   /**
-   * @brief Temperature
+   * @brief Speed of sound
    */
-  double& temperature() noexcept { return this->_temp; }
+  double& sound_speed() noexcept { return this->_c; }
 
   /**
    * @brief ultrasound wavelength
    */
-  [[nodiscard]] double wavelength(const size_t dev_idx) const { return this->_temp / frequency(dev_idx); }
+  [[nodiscard]] double wavelength(const size_t dev_idx) const { return this->_c / frequency(dev_idx); }
 
   /**
    * @brief Number of devices
@@ -212,7 +212,7 @@ class Geometry {
 
  private:
   std::vector<Device> _devices;
-  double _temp;
+  double _c;
 };
 }  // namespace core
 }  // namespace autd

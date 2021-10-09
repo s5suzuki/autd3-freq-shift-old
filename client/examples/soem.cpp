@@ -3,7 +3,7 @@
 // Created Date: 19/05/2020
 // Author: Shun Suzuki
 // -----
-// Last Modified: 09/10/2021
+// Last Modified: 10/10/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -18,7 +18,7 @@
 
 class FocalPointGain final : public autd::core::Gain {
  public:
-  static autd::GainPtr Create(const autd::Vector3& point) { return std::make_shared<FocalPointGain>(std::forward<const autd::Vector3>(point)); }
+  static autd::GainPtr create(const autd::Vector3& point) { return std::make_shared<FocalPointGain>(std::forward<const autd::Vector3>(point)); }
 
   void calc(const autd::GeometryPtr& geometry) override {
     for (size_t dev_idx = 0; dev_idx < geometry->num_devices(); dev_idx++) {
@@ -57,6 +57,8 @@ std::string get_adapter_name() {
 int main() try {
   const auto cnt = autd::Controller::create();
 
+  cnt->geometry()->sound_speed() = 340e3;  // mm/s, wavelength will be sound_speed/frequency, i.e., sound_speed/(200MHz/freq_cycle)
+
   // FPGA base clk frequency is 200MHz
   cnt->geometry()->add_device(autd::Vector3(0, 0, 0), autd::Vector3(0, 0, 0), 5000);  // 200MHz/5000 = 40kHz
   cnt->geometry()->add_device(autd::Vector3(0, 0, 0), autd::Vector3(0, 0, 0), 4999);  // 200MHz/4999 ~ 40.008kHz
@@ -74,7 +76,7 @@ int main() try {
 
   const auto point =
       autd::Vector3(autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_X - 1) / 2.0), autd::TRANS_SPACING_MM * ((autd::NUM_TRANS_Y - 1) / 2.0), 150.0);
-  const auto g = FocalPointGain::Create(point);
+  const auto g = FocalPointGain::create(point);
   cnt->send(g);
 
   std::cout << "press any key to finish..." << std::endl;

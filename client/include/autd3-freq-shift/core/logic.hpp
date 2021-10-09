@@ -3,7 +3,7 @@
 // Created Date: 11/05/2021
 // Author: Shun Suzuki
 // -----
-// Last Modified: 09/10/2021
+// Last Modified: 10/10/2021
 // Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
 // -----
 // Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -107,9 +107,8 @@ class Logic {
 
     *size = sizeof(GlobalHeader) + sizeof(uint16_t) * NUM_TRANS_IN_UNIT * num_devices;
 
-    auto* cursor = data + sizeof(GlobalHeader);
-    const auto byte_size = NUM_TRANS_IN_UNIT * sizeof(uint16_t);
-    for (size_t i = 0; i < num_devices; i++, cursor += byte_size) cursor[0] = geometry->freq_cycle(i);
+    auto* cursor = reinterpret_cast<uint16_t*>(data + sizeof(GlobalHeader));
+    for (size_t i = 0; i < num_devices; i++, cursor += NUM_TRANS_IN_UNIT) cursor[0] = geometry->freq_cycle(i);
   }
 };
 }  // namespace autd::core
