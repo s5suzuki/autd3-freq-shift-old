@@ -4,7 +4,7 @@
  * Created Date: 15/12/2020
  * Author: Shun Suzuki
  * -----
- * Last Modified: 09/10/2021
+ * Last Modified: 10/10/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2020 Hapis Lab. All rights reserved.
@@ -42,8 +42,8 @@ always_ff @(posedge CLK) begin
     t <= {1'b0, TIME};
     C <= {2'b00, CYCLE};
     P <= {1'b0, CYCLE - PHASE_DELAY};
-    DL = {2'b00, DUTY[WIDTH-1:1]};
-    DR = {2'b00, DUTY[WIDTH-1:1]} + {16'h0000, DUTY[0]};
+    DL <= {2'b00, DUTY[WIDTH-1:1]};
+    DR <= {2'b00, DUTY[WIDTH-1:1]} + {16'h0000, DUTY[0]};
 
     left <= {1'b0, t} + {1'b0, DL};
     right <= {1'b0, P} + {1'b0, DR};

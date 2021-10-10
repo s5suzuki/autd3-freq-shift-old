@@ -4,7 +4,7 @@
  * Created Date: 27/03/2021
  * Author: Shun Suzuki
  * -----
- * Last Modified: 09/10/2021
+ * Last Modified: 10/10/2021
  * Modified By: Shun Suzuki (suzuki@hapis.k.u-tokyo.ac.jp)
  * -----
  * Copyright (c) 2021 Hapis Lab. All rights reserved.
@@ -236,16 +236,22 @@ end
 generate begin:TRANSDUCERS_GEN
         genvar ii;
         for(ii = 0; ii < TRANS_NUM; ii++) begin
+            logic [WIDTH-1:0] c;
+            logic [WIDTH-1:0] t;
             pwm_generator#(
                              .WIDTH(WIDTH)
                          ) pwm_generator(
                              .CLK(sys_clk),
-                             .TIME(time_cnt_for_ultrasound),
-                             .CYCLE(cycle),
+                             .TIME(t),
+                             .CYCLE(c),
                              .DUTY(duty[ii]),
                              .PHASE_DELAY(phase[ii]),
                              .PWM_OUT(XDCR_OUT[cvt_uid(ii) + 1])
                          );
+            always_ff @(posedge sys_clk) begin
+                t <= time_cnt_for_ultrasound;
+                c <= cycle;
+            end
         end
     end
 endgenerate
